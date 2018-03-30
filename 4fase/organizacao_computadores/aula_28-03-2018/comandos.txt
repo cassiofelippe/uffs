@@ -1,0 +1,8 @@
+
+g++ -O0 arquivo.cc -o arquivo
+g++ -O2 arquivo.cc -o arquivo
+g++ -Os arquivo.cc -o arquivo
+
+time ./arquivo<input1.in>saida // rodar 10x
+
+valgrind --tool=cachegrind ./arquivo<input1.in>saida
