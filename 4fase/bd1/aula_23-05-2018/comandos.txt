@@ -1,0 +1,16 @@
+update reserve set nhours = 35 where idb = 200 and ids = 15;
+
+1. select name, birthd from sailor;
+2. select name, r.dscr from sailor join ranking as r on sailor.rank = r.rank;
+3. select name, len from boat where color = 'Blue';
+4. select * from reserve as r join boat as b on r.idb = b.idb join sailor as s on r.ids = s.ids where nhours > 20;
+5. select * from boat where color = 'Blue' and power > 30;
+6. select * from ranking as r join sailor as s on s.rank = r.rank join reserve as re on re.ids = s.ids join boat as b on b.idb = re.idb where b.color = 'White' and r.dscr = 'Beginner';
+7. select name from sailor where (current_date - birthd) > (40*365);
+8. select * from boat where len < 10;
+
+9. select count(*) from reserve where dater = '2006-07-03';
+10. select avg(power) from boat where color = 'White';
+13. select * from boat join reserve as r on r.idb = boat.idb;
+
+

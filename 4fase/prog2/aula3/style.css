@@ -1,0 +1,13 @@
+#top:hover {
+  color: green;
+}
+
+.top:hover {
+  font-style: italic;
+}
+
+input[type="text"], input[type="password"], input[type="email"], input[name="city"], input[type="tel"], select {
+	width: 100%;
+	padding: 4px 2px;
+	border-radius: 5px;
+}
