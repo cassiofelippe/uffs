@@ -1,0 +1,66 @@
+Universidade Federal da Fronteira Sul - UFFS
+Campus Chapecó
+Ciência da Computação
+Banco de Dados I
+Prof.: Denio Duarte
+Lista de Exercícios
+Esquema:
+A tabela ranking armazena as classes dos velejadores. Existem cinco classes cadastradas: ’Ama-
+teur’, ’Beginner’,’Semi-Professional’, ’Professional’, ’Master’.
+A tabela sailor armazena os veladores cadastrados no sistema.
+A tabela boat armazena os barcos disponíveis para locação, sendo que os atributos (colunas) len
+e power descrevem o tamanho e a potência do barco, respectivamente.
+A tabela reserve armazena os dados relativos às reservas de barcos realizadas pelos velejadores.
+O atributo (coluna) nhours indica o número de horas que durou a reserva, um valor NULL
+indica que o barco ainda não foi devolvido.
+
+1. Retornar os nomes e a data de nascimento de todos os velejadores.
+
+2. Retornar os nomes e a descrição da classe de todos os velejadores.
+
+3. Retornar os nomes e os tamanhos dos barcos de cor azul (Blue).
+
+4. Retornar dados dos velejadores e barcos que tiveram duração das reservas superiores a 20 horas.
+
+5. Retornar os dados dos barcos azuis cuja a potência seja superior a 30 HP.
+
+6. Retornar os dados das reservas (apresentar os nomes ao invés dos códigos) feitas por velejadores iniciantes (Beginner) de barcos brancos (White).
+
+7. Retornar o nome dos velejadores com mais de quarenta anos (a variável current_date retorna a data atual: a expressão current_date - birthd devolve o número de dias entre hoje e a data de nascimento).
+
+8. Retornar os dados dos barcos cujos os tamanhos sejam inferiores a 10 feet (pés).
+
+9. Retornar a quantidade de reservas realizadas em 03/07/2006.
+
+10. Retornar a média de potência dos barcos brancos.
+
+11. Retornar a maior potência dos barcos por cor.
+
+12. Retornar a quantidade de velejadores por classe. Deve aparecer a descrição da classe e não o código.
+
+13. Retornar os dados de todos os barcos e de suas respectivas reservas, caso existirem.
+
+14. Retornar os nomes dos velejadores e dos barcos que ainda não foram devolvidos.
+
+15. Retornar o nome do velejador e do barco que tiveram o maior tempo de reserva (podem existir mais de um).
+
+16. Retornar os dados dos barcos que nunca foram reservados.
+
+17. Retornar o nome de todos os velejadores com as suas reservas caso existam.
+
+18. Retornar o nome e classe (descrição) dos velejadores que fizeram menos de 10 reservas.
+
+19. Retornar os nomes dos barcos com seus respectivos totais de tempo de reserva.
+
+20. Retornar os nomes dos velejadores e barcos reservados por velejadors amadores no ano de 2007.
+
+21. Retornar nome do velejador, descrição da classe do velejador, nome e cor do barco das reservas feitas pelo velejador.
+
+22. Retornar os dados do maior barco (ou maiores).
+
+23. Retornar os dados dos velejadores que já reservaram o maior barco (ou maiores).
+
+24. Retornar o velejador mais novo da classe Professional (pode existir mais de um).
+
+25. Retornar o nome do velejador (ou velejadores) que reservaram todos os barcos vermelhos cadastrados.
+

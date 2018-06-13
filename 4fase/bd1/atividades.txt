@@ -11,6 +11,14 @@ update reserve set nhours = 35 where idb = 200 and ids = 15;
 
 9. select count(*) from reserve where dater = '2006-07-03';
 10. select avg(power) from boat where color = 'White';
+
 13. select * from boat join reserve as r on r.idb = boat.idb;
 
-
+14. select s.name from reserve r join sailor s on s.ids = r.ids where r.nhours is null;
+15. select s.name, b.name from reserve r join sailor s on s.ids = r.ids join boat b on b.idb = r.idb where r.nhours = (select max(nhours) from reserve);
+16. select b.name from boat b except select b.name from reserve r join boat b on b.idb = r.idb;
+17. select s.name, r.idb, r.ids, r.dater, r.nhours from sailor s join reserve r on r.ids = s.ids order by s.name;
+ 
+20. select s.name, b.name from reserve r join sailor s on s.ids = r.ids join boat b on b.idb = r.idb join ranking ra on ra.rank = s.rank where r.dater >= '2007-01-01' and r.dater <= '2007-12-31' and ra.dscr = 'Amateur';
+21. select s.name, ra.dscr, b.name, b.color from reserve r join sailor s on s.ids = r.ids join ranking ra on ra.rank = s.rank join boat b on b.idb = r.idb;
+22. select * from boat where len = (select max(len) from boat);
