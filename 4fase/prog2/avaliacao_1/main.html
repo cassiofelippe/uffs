@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <title>Nova Era Camisetas</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Cassio Luis Zamignan Forte Felippe">
+    <meta name="description" content="Avaliação da disciplina de Programação II, dia 03/05/2018">
+    <meta name="keywords" content="HTML, CSS, JavaScript">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="js/script.js"></script>
+  </head>
+  <body>
+    <div class="col-100 text-center">
+      <header>
+        <h1 class="blue"><strong>NOVA ERA CAMISETAS</strong></h1>
+      </header>
+    </div>
+
+    <div class="col-100 text-center">
+      <nav>
+        <a href="#" target="_blank" class="top-item">Página inicial</a>
+        <a href="#" target="_blank" class="top-item">Pedidos</a>
+        <a href="#" target="_blank" class="top-item">Contate-nos</a>
+      </nav>
+    </div>
+
+    <div class="col-100">&nbsp;</div>
+
+    <main>
+      <fieldset>
+        <legend><strong>Identificação do Cliente</strong></legend>
+        <div class="col-50">
+          <label for="nome-cliente">Nome do cliente</label>
+          <input type="text" id="nome-cliente" name="nome-cliente" placeholder="insira o nome do cliente" required>
+        </div>
+        
+        <div class="col-50">
+          <label for="email-cliente">Email do cliente</label>
+          <input type="email" id="email-cliente"  name="email-cliente" placeholder="exemplo@dominio.com" required>
+        </div>
+      </fieldset>
+
+      <div class="col-100">&nbsp;</div>
+      
+      <fieldset>
+        <legend><strong>Dados do Evento</strong></legend>
+        <div class="col-100">
+          <div class="col-33">
+            <label for="nome-evento">Nome do evento</label>
+            <input type="text" id="nome-evento" name="nome-evento" placeholder="insira o nome do evento" required>
+          </div>
+          
+          <div class="col-33">
+            <label>Tipo do evento</label>
+            <select name="gender" id="gender">
+              <option value="e">Empresarial</option>
+              <option value="a">Acadêmico</option>
+              <option value="r">Religioso</option>
+              <option value="o">Outros</option>
+            </select>
+          </div>
+
+          <div class="col-33">
+            <label>Data do evento</label>
+            <input type="month" id="data-evento" name="data-evento">
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="col-100">&nbsp;</div>
+      
+      <fieldset>
+        <legend><strong>Pedido</strong></legend>
+        <div class="col-100">
+          <div class="col-25">
+            <label for="quantidade-p">Quantidade camisas P</label>
+            <input type="number" oninput="calculaTotal()" id="quantidade-p" name="quantidade-p" value=0 min=0>
+          </div>
+          
+          <div class="col-25">
+            <label for="quantidade-m">Quantidade camisas M</label>
+            <input type="number" oninput="calculaTotal()" id="quantidade-m" name="quantidade-m" value=0 min=0>
+          </div>
+
+          <div class="col-25">
+            <label for="quantidade-g">Quantidade camisas G</label>
+            <input type="number" oninput="calculaTotal()" id="quantidade-g" name="quantidade-g" value=0 min=0>
+          </div>
+
+          <div class="col-25">
+            <label for="quantidade-gg">Quantidade camisas GG</label>
+            <input type="number" oninput="calculaTotal()" id="quantidade-gg" name="quantidade-gg" value=0 min=0>
+          </div>
+        </div>
+        
+        <div class="col-100"><hr/></div>
+        
+        <div class="col-100">
+          <div class="col-10 text-center">
+            <label for="cor-tecido">Cor do tecido</label>
+            <input type="color" id="cor-tecido" name="cor-tecido">
+          </div>
+          <div class="col-50 text-center">
+            <label for="arquivo">Arquivo da arte</label>
+            <input type="file" id="arquivo" name="arquivo">
+          </div>
+          <div class="col-40 text-center" id="tipo-gola">
+            <label>Tipo da gola</label>
+            <input type="radio" name="tipo-gola-polo" value="P">Polo
+            <input type="radio" name="tipo-gola-ribana" value="R">Ribana
+            <input type="radio" name="tipo-sem-gola" value="S">Sem Gola
+          </div>
+        </div>
+
+        <div class="col-100"><hr/></div>
+
+        <div class="col-100">
+          <label>Opcionais adicionais</label>
+          <ul id="opcionais-adicionais">
+            <li>
+              <input onclick="calculaTotal()" type="checkbox" name="nome-camisa">Nome do evento nas costas (adicional de R$ 3,00 por camiseta)
+            </li>
+            <li>
+              <input onclick="calculaTotal()" type="checkbox" name="miniatura-camisa">Miniatura da arte na manga (adicional de R$ 4,00 por camiseta)
+            </li>
+            <li>
+              <input onclick="calculaTotal()" type="checkbox" name="acabamento-camisa">Acabamento com punho na manga (adicional de R$ 5,00 por camiseta)
+            </li>
+          </ul>
+        </div>
+
+        <div class="col-100"><hr/></div>
+
+        <div class="col-100">
+          <div class="col-50">
+            <label for="data-evento">Data do evento</label>
+            <input type="date" name="data-evento">
+          </div>
+          <div class="col-50">
+            <label>Hora do evento</label>
+            <input type="time" name="hora-evento">
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="col-100">&nbsp;</div>
+
+      <fieldset>
+        <legend><strong>Valor Total</strong></legend>
+        <a id="total" class="col-25"></a>
+      </fieldset>
+      
+      <div class="col-100">&nbsp;</div>
+
+      <div class="col-100 text-right">
+        <input type="submit" value="Limpar Campos" id="clear">
+        <input type="submit" onclick="valida()" value="Enviar Pedido" id="send">
+      </div>
+    </main>
+
+    <aside>
+      <img alt="Imagem de propaganda" src="img/imagem_propaganda.jpg">
+    </aside>
+      
+    <div class="col-100">&nbsp;</div>
+    <div class="col-100">&nbsp;</div>
+
+    <div id="duvidas" class="text-right">
+      Em caso de dúvidas, entre em contato pelo número 0800-0000
+    </div>
+
+    <div class="col-100">&nbsp;</div>
+    
+    <footer class="text-right">
+      Fone: (49) 3323-0000, email: duvidas@novaera.com
+    </footer>
+  </body>
+</html>
