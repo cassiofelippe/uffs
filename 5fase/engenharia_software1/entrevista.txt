@@ -1,0 +1,17 @@
+Nome do entrevistado:
+Clairton Rodrigo Heinzen
+
+Empresa que trabalha:
+CRH (prestando serviço para o Sicoob MaxiCrédito e Reclame Aqui).
+
+Função desempenhada:
+Engenheiro de Software (claro que sem CREA, kkkk).
+
+Tempo de experiência na área de software:
+Desde 2008.
+
+Quais os principais problemas/desafios enfrentados no desenvolvimento de software?
+Entender a necessidade do cliente e o que ele deseja, para desenvolver algo que o atenda. O problema é que nem sempre o que cliente entende o que ele mesmo quer, mas acha que sua ideia é revolucionaria e é o próximo whatsapp, facebook, uber, airbnb e assim por diante.
+
+Como ele buscam amenizar mitigar/resolver estes problemas?
+Comunicação e conversa com desenvolvimento de protótipos e MVP para validar a ideia e a necessidade.
