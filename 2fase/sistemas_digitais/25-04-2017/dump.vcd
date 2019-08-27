@@ -1,0 +1,30 @@
+$date
+	Tue May  9 18:17:02 2017
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1s
+$end
+$scope module test $end
+$var wire 1 ! light $end
+$var reg 1 " CLOCK_50 $end
+$var reg 1 # KEY $end
+$scope module c $end
+$var wire 1 " CLOCK_50 $end
+$var wire 1 ! LEDG $end
+$var reg 26 $ count [25:0] $end
+$var reg 1 % light $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+0%
+bx $
+0#
+x"
+0!
+$end
+#5000

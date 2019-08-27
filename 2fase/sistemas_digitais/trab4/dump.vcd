@@ -1,0 +1,84 @@
+$date
+	Fri Jul 21 16:45:16 2017
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1s
+$end
+$scope module test $end
+$var wire 16 ! areaSaida [15:0] $end
+$var reg 8 " x1 [7:0] $end
+$var reg 8 # x2 [7:0] $end
+$var reg 8 $ x3 [7:0] $end
+$var reg 8 % y1 [7:0] $end
+$var reg 8 & y2 [7:0] $end
+$var reg 8 ' y3 [7:0] $end
+$scope module area $end
+$var wire 16 ( area [15:0] $end
+$var wire 8 ) x1 [7:0] $end
+$var wire 8 * x2 [7:0] $end
+$var wire 8 + x3 [7:0] $end
+$var wire 8 , y1 [7:0] $end
+$var wire 8 - y2 [7:0] $end
+$var wire 8 . y3 [7:0] $end
+$var wire 1 / invertedArea $end
+$scope module inverting $end
+$var wire 16 0 x [15:0] $end
+$var reg 1 / o $end
+$upscope $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+b0x000x 0
+x/
+b101 .
+b1 -
+b1 ,
+b1 +
+b101 *
+b1 )
+b0x000x (
+b101 '
+b1 &
+b1 %
+b1 $
+b101 #
+b1 "
+b0x000x !
+$end
+#1
+b10111 '
+b10111 .
+b1001 &
+b1001 -
+b1000 %
+b1000 ,
+b10 $
+b10 +
+b111 #
+b111 *
+b0x0xxxx !
+b0x0xxxx (
+b0x0xxxx 0
+b100 "
+b100 )
+#2
+b111 '
+b111 .
+b10101 &
+b10101 -
+b10000 %
+b10000 ,
+b11 $
+b11 +
+b100 #
+b100 *
+b0xxx0x0x !
+b0xxx0x0x (
+b0xxx0x0x 0
+b1100 "
+b1100 )

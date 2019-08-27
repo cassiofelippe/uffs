@@ -1,0 +1,59 @@
+$date
+	Tue May  9 18:37:01 2017
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1s
+$end
+$scope module test $end
+$var wire 8 ! ls [7:0] $end
+$var reg 1 " clk $end
+$scope module leds1 $end
+$var wire 1 " CLOCK_50 $end
+$var wire 8 # LEDG [7:0] $end
+$var reg 8 $ blinkingLed [7:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+b0 $
+b0 #
+0"
+b0 !
+$end
+#2
+b11111111 !
+b11111111 #
+b11111111 $
+1"
+#4
+0"
+#6
+b0 !
+b0 #
+b0 $
+1"
+#8
+0"
+#10
+b11111111 !
+b11111111 #
+b11111111 $
+1"
+#12
+0"
+#14
+b0 !
+b0 #
+b0 $
+1"
+#16
+0"
+#18
+b11111111 !
+b11111111 #
+b11111111 $
+1"
