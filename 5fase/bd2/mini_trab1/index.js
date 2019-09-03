@@ -11,12 +11,9 @@ client.query("INSERT INTO test (name, created_on) values ('Vinicius', current_ti
 
 (async () => {
   await client.query('BEGIN')
-  await client.query(`INSERT INTO test (name, created_on) VALUES('OK', current_timestamp) RETURNING id`)
-  await client.query('COMMIT')
-
-  await client.query('BEGIN')
   await client.query(`INSERT INTO test (name, created_on) VALUES('ERROR', current_timestamp) RETURNING id`);
-  await client.query('ROLLBACK')
+  await client.query(`INSERT INTO test (name, created_on) VALUES('ERROR', 1762getsyt) RETURNING id`);
+  await client.query('COMMIT')
 })().catch(e => console.error(e.stack))
 
 
