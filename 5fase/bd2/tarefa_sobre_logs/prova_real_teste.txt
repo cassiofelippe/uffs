@@ -1,0 +1,56 @@
+DESFAZ NÃO COMITADO, VÊ OS VALORES ANTIGOS
+
+T9 não comitou, H 30 -> 10
+T8 não comitou, G 30 -> 10
+A 32 -> 25
+F 2 -> 1
+________________
+NOVO:
+A: 25
+B: 30
+C: 90
+D: 40
+E: 28
+F:  1
+G: 10
+H: 10
+________________
+ANTIGO:
+A: 10
+B: 20
+C: 55
+D: 50
+E: 17
+F:  1
+G: 10
+H: 10
+________________
+RESULTADO:
+A: 10
+B: 20
+C: 55
+D: 50
+E: 17
+F:  1
+G: 10
+H: 10
+
+
+
+
+o código é UNDO/REDO, falta implementar o REDO
+acima ele ignora tudo acima do checkpoint
+
+<Start CKPT(T6)>
+
+seria necessário fazer a verificação (que eu fiz na linha do tempo no excel)
+somente a partir daqui:
+  <start T8>
+  <T8,G,10,30>
+  <End CKPT>
+  <start T9>
+  <T9,H,10,30>
+pois tudo o que foi feito acima do START do checkpoint foi pro disco quando deu END
+(devido ao modo UNDO/REDO)
+
+o T6 citado no checkpoint é referente às transações abertas (não commitadas), que no caso era a T6
