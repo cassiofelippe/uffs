@@ -1,0 +1,18 @@
+https://docs.google.com/presentation/d/1j8VQ7EQem5f--LLCBJtg9Jjlb9dYm_ZKPSGnUZZ_GJQ/edit#slide=id.g50e20681a4_0_1
+
+A:
+
+1a) Strict 2PL
+
+2a) Não atende 2PL pois está desbloqueando um item não bloqueado anteriormente, desta forma não cumprindo o conceito de Transações Bem Formadas.
+
+
+B:
+
+1b) Sim
+
+2b) Não, pois possui escritas
+
+3b) Não, pois não ocorrem conflitos
+
+4b) Sim

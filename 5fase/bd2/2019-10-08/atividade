@@ -1,0 +1,5 @@
+1:
+
+A) Strict 2PL
+
+B) Não atende 2PL pois está desbloqueando um item não bloqueado anteriormente, desta forma não cumprindo o conceito de Transações Bem Formadas.
