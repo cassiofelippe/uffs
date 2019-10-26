@@ -76,8 +76,8 @@ for i in range(len(arquivolist)-1, 0, -1):
         variaveis[words.findall(linha)[1]] = words.findall(linha)[2]
 
 
-# ITERA SOB OS CHECKPOINTS QUE FORAM FECHADOS
-# NO CASO O ÚNICO É O DA TRANSAÇÃO T6
+# ITERA SOBRE O ÚLTIMO CHECKPOINT QUE FOI FECHADO
+print(range(i,len(arquivolist)-1,1))
 for j in range(i,len(arquivolist)-1,1):
     linha = arquivolist[j]
   
