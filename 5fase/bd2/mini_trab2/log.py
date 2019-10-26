@@ -76,12 +76,9 @@ for i in range(len(arquivolist)-1, 0, -1):
         variaveis[words.findall(linha)[1]] = words.findall(linha)[2]
 
 
-print('>> ', range(i,len(arquivolist)-1,1))
-
 # ITERA SOB OS CHECKPOINTS QUE FORAM FECHADOS
 # NO CASO O ÚNICO É O DA TRANSAÇÃO T6
 for j in range(i,len(arquivolist)-1,1):
-    print('>> ', arquivolist[j])
     linha = arquivolist[j]
   
 
