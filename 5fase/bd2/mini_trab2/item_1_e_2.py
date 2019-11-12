@@ -1,10 +1,9 @@
 import re;
 arquivo = open('teste03', 'r')
-arquivolist = list(arquivo)
-UNDO = []
+arquivolist = list(arquivo)    
+UNDO = []                       
 UNDOcheck = []
 
-# ITEM 1
 
 # DECLARANDO VARIÁVEIS PARA EVITAR UM CÓDIGO MUITO VERBOSO
 commit = re.compile(r'commit', re.IGNORECASE) 
@@ -27,7 +26,7 @@ end = 0
 
 
 # ITERA SOBRE CADA "EXECUÇÃO" (LINHA) DO "SGBD"
-# COMEÇANDO DE BAIXO PARA CIMA PARA UNDO
+# COMEÇANDO DE BAIXO PARA CIMA
 for linha in reversed(arquivolist):
     # VERIFICA SE A LINHA É UM CHECKPOINT
     if startckpt.search(linha):
@@ -75,41 +74,20 @@ for i in range(len(arquivolist)-1, 0, -1):
     elif words.findall(linha)[0] in UNDO:
         # RESTAURA O VALOR DO ITEM PARA O VALOR INICIAL DO LOG
         variaveis[words.findall(linha)[1]] = words.findall(linha)[2]
-        
+
 
 # ITERA SOBRE O ÚLTIMO CHECKPOINT QUE FOI FECHADO
+print(range(i,len(arquivolist)-1,1))
 for j in range(i,len(arquivolist)-1,1):
     linha = arquivolist[j]
+  
+
+print("Aplicado UNDO:", UNDOcheck)
+print("Resultado:", variaveis)
+arquivo.close()
 
 
-#   ITEM 2
 #   O código acima está implementando corretamente o mecanismo de log UNDO
 #   pois está desfazendo somente as transações que não foram commitadas.
 #   No caso da transação T6, ela não foi desfeita pois o checkpoint que a envolve
 #   foi finalizado, segundo o arquivo de log. 
-
-
-# ITEM 3: PARTE REDO
-
-REDO = []
-REDOcheck = []
-
-for i in arquivolist:
-    # Para implementar o mecanismo UNDO/REDO resta fazer a parte do REDO
-    # que neste caso seria selecionar as transações já comitadas e refazê-las
-    if commit.search(i):
-        Tx = extracT.findall(i)[0]
-        REDO.append(Tx)
-
-print("\nAplicar REDO: ", REDO)
-
-for i in REDO:
-    # TODO lógica refazer commits para REDO
-    REDO.remove(i)
-    REDOcheck.append(i)
-
-
-print("Aplicado UNDO:", UNDOcheck)
-print("Aplicado REDO:", REDOcheck)
-print("Resultado:", variaveis)
-arquivo.close()
