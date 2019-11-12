@@ -1,0 +1,15 @@
+1. Como realizo atualmente:
+	1.1 - Através de anotações em papeis e rascunhos, planilhas de excel, verficação peoriódica do saldo.
+	1.2 - Agenda eletrônica, anotações (postit)
+	1.3 - Lista, cronograma.
+
+2.Quais os principais problemas enfrentados:
+	2.1 Esquecimento de pagamentos, transtornos gerados em razão do esquecimentos, falta equilíbrio da data de recebimento e pagamento, gastos não previstos;
+	2.2 Atrasos, esquecimento e choque de horários, problemas com perdas das anotações;
+	2.3 Atrasos, esquecimento, acumulos de tarefas, elencar prioridades;
+B--
+	3.1- Controle de entradas e saídas, painel que apresentasse as despesas fixas, estabelecimento de margem de sobra para eventuais gastos não previstos;
+	3.2- Emissão de alertas quanto aos próximos compromissos, verificações de horarios para evitar choque de horários;
+	3.3- Estabelecimento de rotinas controlando os horários, classificação de prioridades (ordenação de tarefas);
+	
+	 

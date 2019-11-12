@@ -1,0 +1,9 @@
+A) Os testes unitários são realizados após ser criada uma lógica do sistema, baseada em uma regra de negócio, para validar uma validação ou regra específica, em caso de acerto e erro, e quando há possibilidade, em caso de exceções do sistema; 
+
+B) Os testes de sistema baseam praticamente todo o desenvolvimento, pois são os primeiros itens a serem escritos após a estruturação básica do sistema. Para cada funcionalidade adicionada, é no primeiro momento criado um teste, que vai nortear o desenvolvimento da lógica, de acordo com os requisitos listados. O teste criado vai sendo incrementado (adicionando asserts e novos dados);
+
+C) Não existem documentos específicos dos testes. O entendimento é baseado em comentários e documentações (e até na nomenclatura sugestiva de métodos e atributos);
+
+D) São encontrados desafios principalmente em métodos que serão executados em uma grande quantidade de informações, pois os testes rodam em uma base local que é muito menor que a base de produção (onde será executado o sistema). Em casos extremos são feitas cópias dos branches (do git) e executados em uma base de homologação (cópia de produção, utilizada para testes dos desenvolvedores e dos usuários) com duas ou mais versões do código, para ver qual se comporta melhor. Estes casos específicos são testes que não ficam registrados, logo não são executados toda vez, porém busca-se sempre deixar um comentário para esclarecer o porque de ter sido escrito o código de tal forma;
+
+E) Seria ideal ter mais tempo para execução de testes e melhoria de código e de ambiente, pois muitas vezes é cobrado um prazo curto, que é suficiente para desenvolver as lógicas, mas insuficiente para testá-las;
