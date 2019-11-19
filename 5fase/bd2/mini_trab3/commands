@@ -1,0 +1,3 @@
+create table clients (id int, cpf char[11])
+insert into clients (1001, 11048916979)
+select * from clients
