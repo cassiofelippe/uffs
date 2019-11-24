@@ -8,10 +8,9 @@
 
 
 /*Example:
-create table teste3 (int a, char[100] b)
-insert int teste3 values (1,'aaaa')
-insert int teste3 values (1,'aaaa')
-select * from teste3
+create table test (int a, char[100] b)
+insert into test values (1,aaaa)
+select * from test
 */
 
 
@@ -25,7 +24,7 @@ typedef struct Header {
 typedef struct Item {
     int offset;
     int totalLen; // tamanho total do elemento 
-    int writed;
+    int writed; 
 } item;
 
 typedef struct Attribute { // atributo da tabela sql, coluna da tabela sql
@@ -41,6 +40,8 @@ void buildHeader(char *sql, char *tableName, int qtdPages);
 void getAllAtributes(char *sql, char *attributes);
 
 void leArquivo(char *tableName);
+
+int selectFrom(char *sql, int numPage, int key);
 
 /**
  * Separa a operação do restante da string SQL 
@@ -64,19 +65,19 @@ void getOp(char *sql, char *operation) {
 
 void createPage(char *tableName, int numPage) {
     //cria pagina no disco com tamanho de 8kb
-  	header head;
+    header head;
     head.memFree = 8180; // quantidade de memória livre na página
-	head.next = 8191; // usado na criação do arquivo da pagina, para indicar onde sera inserido o proximo elemento
+    head.next = 8191; // usado na criação do arquivo da pagina, para indicar onde sera inserido o proximo elemento
     head.qtdItems = 0; //usado na criação do arquivo da pagina, incialemnte cria a pagina zerada
 
-  	struct stat stateDir = {0};
+    struct stat stateDir = {0};
 
     char pageName[600]; 
 
     //printf("tableName: %s\n\n", tableName);
     //printf("NumPage: %d\n\n", numPage);
 
-  	//define o nome da pagina na variavel pageName, com base nos parametros informados na função
+    //define o nome da pagina na variavel pageName, com base nos parametros informados na função
     snprintf(pageName, sizeof(pageName), "%s/page%d.dat", tableName, numPage); 
 
     FILE *page = fopen(pageName, "wb"); //cria o arquivo da pagina no modo de escrita binária
@@ -85,7 +86,7 @@ void createPage(char *tableName, int numPage) {
     fwrite(&head.qtdItems, sizeof(int), 1, page);// n elementos
     fclose(page); // fecha o arquivo
     
-  	if(page == NULL) { //caso tenha ocorrido algum erro na criação da pagina
+    if(page == NULL) { //caso tenha ocorrido algum erro na criação da pagina
         printf("Failed to create page\n");
         return;
     }
@@ -93,54 +94,54 @@ void createPage(char *tableName, int numPage) {
 
 
 void createTable(char *sql) {
-	// cria cabeçalho da página
+    // cria cabeçalho da página
     header head;
     head.memFree = 8180; // 8kb
     head.next = 8191; // próxima página
     head.qtdItems = 0; // qtd de registros da tabela
 
-	// delimitador de fim da página
+    // delimitador de fim da página
     char special = '0';
 
     struct stat stateDir = {0};
 
-	char tableName[500]; // define nome da tabela com 500 caracteres
-  	char pageName[600]; // define nome da página com 500 caracteres
-  	memset(tableName, '\0', sizeof(tableName)); // '\0' apos nome da tabela
+    char tableName[500]; // define nome da tabela com 500 caracteres
+    char pageName[600]; // define nome da página com 500 caracteres
+    memset(tableName, '\0', sizeof(tableName)); // '\0' apos nome da tabela
 
-	getTableName(sql, tableName); // pega o nome da tabela
+    getTableName(sql, tableName); // pega o nome da tabela
 
-	// status do arquivo -1 = tabela não existe
-  	if(stat(tableName, &stateDir) == -1) {
+    // status do arquivo -1 = tabela não existe
+    if(stat(tableName, &stateDir) == -1) {
         
-		// cada tabela do banco é armazenada em um diretório com seu nome
-      	if(mkdir(tableName, 0777) == 0)
+        // cada tabela do banco é armazenada em um diretório com seu nome
+        if(mkdir(tableName, 0777) == 0)
             printf("Created table %s\n", tableName);
-		 
+         
         // cria arquivo do cabeçalho da tabela
         snprintf(pageName, sizeof(pageName), "%s/header.dat", tableName);
-      	FILE *headerPage = fopen(pageName, "wb");
+        FILE *headerPage = fopen(pageName, "wb");
         fclose(headerPage);
         
-	    // cria arquivo de página da tabela
-      	snprintf(pageName, sizeof(pageName), "%s/page1.dat", tableName);  
-      	FILE *page = fopen(pageName, "wb");
+        // cria arquivo de página da tabela
+        snprintf(pageName, sizeof(pageName), "%s/page1.dat", tableName);  
+        FILE *page = fopen(pageName, "wb");
         fwrite(&head.memFree, sizeof(int), 1, page);  // quantidade de memória disponível
         fwrite(&head.next, sizeof(int), 1, page);     // onde inserir o proximo elemento
         fwrite(&head.qtdItems, sizeof(int), 1, page); // n elementos
         
-      	// insere caracter especial ao final da página para indicar fim de página
-      	// especial = '0'
-      	fseek(page, 8191, SEEK_SET);
+        // insere caracter especial ao final da página para indicar fim de página
+        // especial = '0'
+        fseek(page, 8191, SEEK_SET);
         fwrite(&special, 1, 1, page);
-      	fclose(page);
+        fclose(page);
         
-      	if(page == NULL) {
+        if(page == NULL) {
             printf("Failed to create page\n");
             return;
         }
-	
-    	buildHeader(sql, tableName, 1);
+    
+        buildHeader(sql, tableName, 1);
     } else {
         printf("Table %s already created\n", tableName);
     }
@@ -163,9 +164,9 @@ void buildHeader(char *sql, char *tableName, int qtdPages) {
 
     fwrite(&i, sizeof(int), 1, headerPage); //escreve o conteudo de i (0) no inicio do arquivo de cabeçalho   
 
-	// encontra o primeiro parentese na string SQL para e separa em tokens
-	// após o primeiro parentese estarão as definições de atributos da tabela
-  	// ex: ( int id, varchar nome )
+    // encontra o primeiro parentese na string SQL para e separa em tokens
+    // após o primeiro parentese estarão as definições de atributos da tabela
+    // ex: ( int id, varchar nome )
     token = strtok(sqlCopy, "(");  
     token = strtok(NULL, "()[], "); 
 
@@ -210,11 +211,11 @@ void buildHeader(char *sql, char *tableName, int qtdPages) {
     fwrite(&i, sizeof(int), 1, headerPage); // escreve o numero de atributos daquela tabela
     fclose(headerPage); // fecha o arquivo de cabeçalho
 
-	leArquivo(tableName); // le o arquivo daquela tabela
+    leArquivo(tableName); // le o arquivo daquela tabela
 }
 
 
-void insertInto(char *sql, int numPage) {
+void insertInto(char *sql, int numPage) { 
     char sqlCopy[1000], *token, tableName[500], pageName[600], attrSql[1000], attrSqlCopy[1000];
     char endVarchar = '$', special = ' ', endChar = '\0';
     int insertSize = 0, qtdFields, nextItem, intVar, nextPage, qtdEndChar = 0;
@@ -225,7 +226,7 @@ void insertInto(char *sql, int numPage) {
     memset(sqlCopy, '\0', sizeof(sqlCopy)); //limpa a variavel que sera usada na copia do script sql
     strcpy(sqlCopy, sql); // script sql
     token = strtok(sqlCopy, " () ,"); // quebra o script sql em tokens
-
+    
     while(token != NULL) { // enquanto existirem tokens
         // quando o i for igual a 2, o token vai ser o nome da tabela
         if(i == 2) 
@@ -234,22 +235,43 @@ void insertInto(char *sql, int numPage) {
         i++;
     }
 
+    printf("\nTABLE NAME: %s", tableName);
+
     snprintf(pageName, sizeof(pageName), "%s/header.dat", tableName); // define o caminho para o cabeçalho da tabela
     FILE *headerPage = fopen(pageName, "rb+"); // abre o arquivo de cabeçalho
 
-	// lê a quantidade de colunas da tabela
-  	fread(&qtdFields, sizeof(int), 1, headerPage);
+    // lê a quantidade de colunas da tabela
+    fread(&qtdFields, sizeof(int), 1, headerPage);
 
-	// laço para ler do cabeçalho da tabela: o nome, tamanho e tipo das colunas
+    // laço para ler do cabeçalho da tabela: o nome, tamanho e tipo das colunas
     for(int i = 0; i < qtdFields; i++) {
         fread(attributes[i].name, 15, 1, headerPage);
         fread(&attributes[i].size, sizeof(int), 1, headerPage);
         fread(&attributes[i].type, 1, 1, headerPage);
+
+        printf("\nattribute i: %d, name: %s, size: %d, type: %c", i, attributes[i].name, attributes[i].size, attributes[i].type);
     }
-	
-  	// procura no arquivo o caminho da proxima pagina
+    
+    char query[1000];
+    strcpy(query, "select * from ");
+    strcat(query, tableName);
+
+    printf("\nQUERY: %s", query);
+
+    int result = selectFrom(query, 1, 1001);
+
+    printf("\nRESULT: %d", result);
+
+    if (result) {
+        printf("\nJá existe registro com id: %d", 1001);
+        return;
+    }
+    
+    printf("\n");
+
+    // procura no arquivo o caminho da proxima pagina
     fread(&nextPage, sizeof(int), 1, headerPage);
-  	fclose(headerPage); // fecha o cabeçalho
+    fclose(headerPage); // fecha o cabeçalho
 
     strcpy(sqlCopy, sql); // faz uma cópia do script sql
     token = strtok(sqlCopy, "()"); // procura os valores da inserção
@@ -264,9 +286,9 @@ void insertInto(char *sql, int numPage) {
 
     token = strtok(attrSqlCopy, ","); // quebra o token de atributos usando o delimitador de virgula
 
-   	// incrementa o tamanho do insert baseado no tipo dos atributos inseridos
-  	for(int i = 0; i < qtdFields; i++) {     	
-      	if(attributes[i].type == 'C') {
+    // incrementa o tamanho do insert baseado no tipo dos atributos inseridos
+    for(int i = 0; i < qtdFields; i++) {        
+        if(attributes[i].type == 'C') {
             insertSize += attributes[i].size;
         } else if(attributes[i].type == 'I') {
             insertSize += attributes[i].size;
@@ -277,6 +299,7 @@ void insertInto(char *sql, int numPage) {
         token = strtok(NULL, ",");
     }
 
+
     strcpy(attrSqlCopy, attrSql); 
 
     snprintf(pageName, sizeof(pageName), "%s/page%d.dat", tableName, numPage); //define o caminho da pagina com os registros da tabela
@@ -286,7 +309,7 @@ void insertInto(char *sql, int numPage) {
     fread(&head.next, sizeof(int), 1, page); // caminho da proxima pagina
     fread(&head.qtdItems, sizeof(int), 1, page); // quantidade de itens naquela pagina
 
-  	// se valores inseridos forem menores que o espaço livre na página, insere na mesma página
+    // se valores inseridos forem menores que o espaço livre na página, insere na mesma página
     if(head.memFree > insertSize) {
         token = strtok(attrSqlCopy, ",");
         item newItem;
@@ -294,27 +317,27 @@ void insertInto(char *sql, int numPage) {
         newItem.totalLen = insertSize;
         newItem.writed = 1;
 
-      	// calcula posição do próximo valor no cabeçalho da página 
+        // calcula posição do próximo valor no cabeçalho da página 
         nextItem = 12 + 12 * head.qtdItems;
-		// move ponteiro do arquivo para posição do próximo valor no cabeçalho da página
+        // move ponteiro do arquivo para posição do próximo valor no cabeçalho da página
         fseek(page, nextItem, SEEK_SET);
 
-		// insere informações do insert no cabeçalho da página
-      	fwrite(&newItem.offset, sizeof(int), 1, page);
+        // insere informações do insert no cabeçalho da página
+        fwrite(&newItem.offset, sizeof(int), 1, page);
         fwrite(&newItem.totalLen, sizeof(int), 1, page);
         fwrite(&newItem.writed, sizeof(int), 1, page);
-	
-		// move ponteiro para posição onde dados do
+    
+        // move ponteiro para posição onde dados do
         // insert serão inseridos na página
         fseek(page, newItem.offset, SEEK_SET);
 
         //printf("OFFSET NEW ITEM: %d\n", newItem.offset);
 
-      	// percorre os campos do inser
+        // percorre os campos do insert
         for(int i = 0; i < qtdFields; i++) {
 
             // char
-      		if(attributes[i].type == 'C') {
+            if(attributes[i].type == 'C') {
                 fwrite(token, strlen(token), 1, page);
                 qtdEndChar = attributes[i].size - strlen(token);
                 fwrite(&endChar, 1, qtdEndChar, page);
@@ -346,7 +369,7 @@ void insertInto(char *sql, int numPage) {
 
         printf("New item inserted\n");
     } else {
-      	// cria uma nova pagina
+        // cria uma nova pagina
         fseek(page, 8191, SEEK_SET);
         fread(&special, 1, 1, page);
         //printf("Special: %c\n", special);
@@ -370,7 +393,7 @@ void insertInto(char *sql, int numPage) {
 }
 
 /**
- *	retorna o nome da tabela
+ *  retorna o nome da tabela
  */
 void getTableName(char *sql, char *name) {
     char sqlCopy[1000];
@@ -416,13 +439,13 @@ void leArquivo(char *tableName) {
 }
 
 
-void selectFrom(char *sql, int numPage) {
+int selectFrom(char *sql, int numPage, int key) {
     char tableName[50], sqlCopy[1000], pageName[600], *token, charInFile, special = ' ';
     int i = 0, qtdFields = 0, moveItem = 0, moveTupla = 0, intInFile, stopChar;
+    int exists = 0; // controla se o valor recebido por parâmetro já existe
 
     item readItem;
     attribute attributes[64];
-    printf("starting select ");
     memset(sqlCopy, '\0', sizeof(sqlCopy));
 
     strcpy(sqlCopy, sql);
@@ -490,10 +513,10 @@ void selectFrom(char *sql, int numPage) {
 
         fseek(page, readItem.offset, SEEK_SET); // posiciona no offset do item
 
-      	// percorre os campos da tabela
+        // percorre os REGISTROS da tabela
         for(int j = 0; j < qtdFields; j++) {  
-			// se o atributo for char
-          	if(attributes[j].type == 'C') { 
+            // se o atributo for char
+            if(attributes[j].type == 'C') { 
                 charInFile = ' '; // seta a variavel com espaço em branco
                 stopChar = 0; // delimitador indicando se chegou no fim do campo char
                 for(int k = 0; k < attributes[j].size; k++) { //laço para percorer o registro do char
@@ -505,14 +528,17 @@ void selectFrom(char *sql, int numPage) {
                 }
                 printf("\t"); // imprime tab
 
-          	// se o atributo for int
+            // se o atributo for int
             } else if(attributes[j].type == 'I') {
                 fread(&intInFile, sizeof(int), 1, page);
                 printf("%d\t", intInFile);
+                if (key == intInFile) { // verifica se o valor é igual a algum registro listado;
+                    exists = 1;
+                }
             // se o atributo for varchar
             } else if(attributes[j].type == 'V') {
                 charInFile = ' ';
-              	// printa caracater a caracter até encontrar $, q delimita o fim de varchar
+                // printa caracater a caracter até encontrar $, q delimita o fim de varchar
                 do {
                     fread(&charInFile, 1, 1, page);
                     if(charInFile != '$')
@@ -527,9 +553,11 @@ void selectFrom(char *sql, int numPage) {
     fread(&special, 1, 1, page); // le o caracter special
     if(special == '1') { // se for igual a 1, significa que ainda existe pagina
         numPage++; 
-        selectFrom(sql, numPage); //continua o select na(s) proxima(s) pagina(s)
+        selectFrom(sql, numPage, 0); //continua o select na(s) proxima(s) pagina(s)
     } else
         fclose(page); // fecha a pagina
+
+    return exists;
 }
 
 
@@ -548,7 +576,7 @@ int main() {
         } else if(strcmp(operation, "insert") == 0) {
             insertInto(sql, 1);
         } else if(strcmp(operation, "select") == 0) {
-            selectFrom(sql, 1);
+            selectFrom(sql, 1, 0);
         } else {
             printf("Something went wrong");
         }
