@@ -1,0 +1,9 @@
+Versão 1 do trabalho
+
+O que faz?
+Identifica o primeiro atributo (tipo int, no exemplo chamado de id) como chave primária.
+No momento da inserção, percorre os registros existentes e verifica se existe outro com o mesmo valor.
+Caso exista, retorna uma mensagem ao usuário e não insere o registro.
+
+Alunos: Cassio Luis Zamignan Forte Felippe & Lucas Tissotti
+

@@ -1,3 +1,5 @@
 create table test (int id, char[11] cpf)
 insert into test (1001,11048916979)
+insert into test (1002,12345678900)
 select * from test
+insert into test (1001,12345678900)
