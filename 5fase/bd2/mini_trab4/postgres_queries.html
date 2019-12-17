@@ -1,0 +1,143 @@
+
+<!-- saved from url=(0065)file:///tmp/.dbeaver-temp5468364253008604431/20191217-091825.html -->
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <style>
+      table {
+        font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+        font-size: 12px;
+        text-align: left;
+        border-collapse: collapse;
+        margin: 10px;
+      }
+      
+      th {
+        font-size: 14px;
+        font-weight: normal;
+        color: #039;
+        padding: 10px 8px;
+      }
+
+      td {
+        color: #669;
+        padding: 8px;
+      }
+
+      .odd {
+        background: #e8edff;
+      }
+
+      img {
+        padding: 5px;
+        border: solid;
+        border-color: #dddddd #aaaaaa #aaaaaa #dddddd;
+        border-width: 1px 2px 2px 1px;
+        background-color: white;
+      }
+
+      p.query {
+        white-space: pre-line;
+      }
+      
+      sql {
+        font-weight: bold;
+        color: darkred;
+      }
+
+      str {
+        font-weight: bold;
+        color: darkgreen;
+      }
+
+      num {
+        font-weight: bold;
+        color: darkblue;
+      }
+    </style>
+  </head>
+  <body>
+    <span hidden>
+      EXPLAIN ANALYSE SELECT * FROM basics b
+      JOIN ratings r ON r.tconst = b.tconst
+      WHERE b.genres @> '{Comedy}'
+      AND r.average_rating > 6.0
+      ORDER BY b.original_title;
+    </span>
+    <p class="query">
+      <sql>EXPLAIN ANALYSE SELECT</sql> * <sql>FROM</sql> basics b
+      <sql>JOIN</sql> ratings r <sql>ON</sql> r.tconst <op>=</op> b.tconst
+      <sql>WHERE</sql> b.genres @> <str>'{Comedy}'</str>
+      <sql>AND</sql> r.average_rating > <num>6.0</num>
+      <sql>ORDER BY</sql> b.original_title;
+    </p>
+    <table>
+      <tbody>
+          <tr>
+              <th>QUERY PLAN</th>
+          </tr>
+          <tr class="odd">
+              <td>Gather Merge (cost=200925.70..216679.37 rows=135022 width=155) (actual time=1377.703..1699.059 rows=245288 loops=1)</td>
+          </tr>
+          <tr>
+              <td> Workers Planned: 2</td>
+          </tr>
+          <tr class="odd">
+              <td> Workers Launched: 2</td>
+          </tr>
+          <tr>
+              <td> -> Sort (cost=199925.68..200094.46 rows=67511 width=155) (actual time=1366.372..1449.684 rows=81763 loops=3)</td>
+          </tr>
+          <tr class="odd">
+              <td> Sort Key: b.original_title</td>
+          </tr>
+          <tr>
+              <td> Sort Method: external merge Disk: 14080kB</td>
+          </tr>
+          <tr class="odd">
+              <td> Worker 0: Sort Method: external merge Disk: 14200kB</td>
+          </tr>
+          <tr>
+              <td> Worker 1: Sort Method: external merge Disk: 14600kB</td>
+          </tr>
+          <tr class="odd">
+              <td> -> Parallel Hash Join (cost=17367.84..189200.84 rows=67511 width=155) (actual time=986.628..1150.720 rows=81763 loops=3)</td>
+          </tr>
+          <tr>
+              <td> Hash Cond: (b.tconst = r.tconst)</td>
+          </tr>
+          <tr class="odd">
+              <td> -> Parallel Seq Scan on basics b (cost=0.00..147742.97 rows=564197 width=115) (actual time=0.195..735.156 rows=445253 loops=3)</td>
+          </tr>
+          <tr>
+              <td> Filter: (genres @&amp;gt; '{Comedy}'::text[])</td>
+          </tr>
+          <tr class="odd">
+              <td> Rows Removed by Filter: 1673232</td>
+          </tr>
+          <tr>
+              <td> -> Parallel Hash (cost=11549.57..11549.57 rows=316902 width=20) (actual time=114.186..114.186 rows=253318 loops=3)</td>
+          </tr>
+          <tr class="odd">
+              <td> Buckets: 65536 Batches: 16 Memory Usage: 3168kB</td>
+          </tr>
+          <tr>
+              <td> -> Parallel Seq Scan on ratings r (cost=0.00..11549.57 rows=316902 width=20) (actual time=0.034..66.771 rows=253318 loops=3)</td>
+          </tr>
+          <tr class="odd">
+              <td> Filter: (average_rating &amp;gt; 6.0)</td>
+          </tr>
+          <tr>
+              <td> Rows Removed by Filter: 79198</td>
+          </tr>
+          <tr class="odd">
+              <td>Planning Time: 0.144 ms</td>
+          </tr>
+          <tr>
+              <td>Execution Time: 1735.090 ms</td>
+          </tr>
+      </tbody>
+    </table>
+  </body>
+</html>
