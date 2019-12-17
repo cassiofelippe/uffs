@@ -38,7 +38,7 @@
         background-color: white;
       }
 
-      p.query {
+      footer, p.query {
         white-space: pre-line;
       }
       
@@ -85,7 +85,7 @@
         <td> Group Key: n.primary_name</td>
       </tr>
       <tr class="odd">
-        <td> -&amp;gt; Gather Merge (cost=541482.01..541607.71 rows=1066 width=14) (actual time=2013.688..2015.623 rows=285 loops=1)</td>
+        <td> -> Gather Merge (cost=541482.01..541607.71 rows=1066 width=14) (actual time=2013.688..2015.623 rows=285 loops=1)</td>
       </tr>
       <tr>
         <td> Workers Planned: 2</td>
@@ -94,13 +94,13 @@
         <td> Workers Launched: 2</td>
       </tr>
       <tr>
-        <td> -&amp;gt; Group (cost=540481.98..540484.65 rows=533 width=14) (actual time=2011.288..2011.316 rows=95 loops=3)</td>
+        <td> -> Group (cost=540481.98..540484.65 rows=533 width=14) (actual time=2011.288..2011.316 rows=95 loops=3)</td>
       </tr>
       <tr class="odd">
         <td> Group Key: n.primary_name</td>
       </tr>
       <tr>
-        <td> -&amp;gt; Sort (cost=540481.98..540483.31 rows=533 width=14) (actual time=2011.286..2011.292 rows=118 loops=3)</td>
+        <td> -> Sort (cost=540481.98..540483.31 rows=533 width=14) (actual time=2011.286..2011.292 rows=118 loops=3)</td>
       </tr>
       <tr class="odd">
         <td> Sort Key: n.primary_name</td>
@@ -115,10 +115,10 @@
         <td> Worker 1: Sort Method: quicksort Memory: 30kB</td>
       </tr>
       <tr class="odd">
-        <td> -&amp;gt; Nested Loop (cost=0.43..540457.84 rows=533 width=14) (actual time=26.605..2011.003 rows=118 loops=3)</td>
+        <td> -> Nested Loop (cost=0.43..540457.84 rows=533 width=14) (actual time=26.605..2011.003 rows=118 loops=3)</td>
       </tr>
       <tr>
-        <td> -&amp;gt; Parallel Seq Scan on principals p (cost=0.00..535996.00 rows=533 width=10) (actual time=26.526..2008.402 rows=118 loops=3)</td>
+        <td> -> Parallel Seq Scan on principals p (cost=0.00..535996.00 rows=533 width=10) (actual time=26.526..2008.402 rows=118 loops=3)</td>
       </tr>
       <tr class="odd">
         <td> Filter: (characters ~~ '%Blacksmith%'::text)</td>
@@ -127,7 +127,7 @@
         <td> Rows Removed by Filter: 12229107</td>
       </tr>
       <tr class="odd">
-        <td> -&amp;gt; Index Scan using names_pkey on names n (cost=0.43..8.37 rows=1 width=24) (actual time=0.018..0.018 rows=1 loops=353)</td>
+        <td> -> Index Scan using names_pkey on names n (cost=0.43..8.37 rows=1 width=24) (actual time=0.018..0.018 rows=1 loops=353)</td>
       </tr>
       <tr>
         <td> Index Cond: (nconst = p.nconst)</td>
@@ -223,4 +223,11 @@
       </tr>
     </table>
   </body>
+  <footer>
+    Fontes:
+    <a href="http://www.postgresqltutorial.com/postgresql-explain" target="_blank">postgresqltutorial.com/postgresql-explain</a>
+    <a href="https://www.postgresql.org/docs/9.3/sql-explain.html" target="_blank">postgresql.org/docs/9.3/sql-explain.html</a>
+    <a href="https://www.postgresql.org/docs/8.2/functions-array.html" target="_blank">postgresql.org/docs/8.2/functions-array.html</a>
+    <a href="https://thoughtbot.com/blog/reading-an-explain-analyze-query-plan" target="_blank">thoughtbot.com/blog/reading-an-explain-analyze-query-plan</a>
+  </footer>
 </html>
