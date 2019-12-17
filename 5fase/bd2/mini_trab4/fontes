@@ -1,0 +1,5 @@
+fontes:
+http://www.postgresqltutorial.com/postgresql-explain/
+https://www.postgresql.org/docs/9.3/sql-explain.html
+https://www.postgresql.org/docs/8.2/functions-array.html
+https://thoughtbot.com/blog/reading-an-explain-analyze-query-plan

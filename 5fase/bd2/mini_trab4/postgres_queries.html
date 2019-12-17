@@ -10,7 +10,8 @@
         font-size: 12px;
         text-align: left;
         border-collapse: collapse;
-        margin: 10px;
+        margin: 10px 0 10px 0;
+        width: 100%;
       }
       
       th {
@@ -58,6 +59,90 @@
     </style>
   </head>
   <body>
+    <h1><strong>QUERY Nº 1</strong></h1>
+    <span hidden>
+      EXPLAIN ANALYSE SELECT primary_name FROM principals p
+      NATURAL JOIN names n
+      WHERE p.characters LIKE '%Blacksmith%'
+      GROUP BY primary_name
+      ORDER BY primary_name ASC;
+    </span>
+    <p class="query">
+      <sql>EXPLAIN ANALYSE SELECT</sql> primary_name <sql>FROM</sql> principals p
+      <sql>NATURAL JOIN</sql> names n
+      <sql>WHERE</sql> p.characters <sql>LIKE</sql> <str>'%Blacksmith%'</str>
+      <sql>GROUP BY</sql> primary_name
+      <sql>ORDER BY</sql> primary_name <sql>ASC<sql>;
+    </p>
+    <table>
+      <tr>
+        <th>QUERY PLAN</th>
+      </tr>
+      <tr class="odd">
+        <td>Group (cost=541482.01..541610.38 rows=1279 width=14) (actual time=2013.688..2013.938 rows=256 loops=1)</td>
+      </tr>
+      <tr>
+        <td> Group Key: n.primary_name</td>
+      </tr>
+      <tr class="odd">
+        <td> -&amp;gt; Gather Merge (cost=541482.01..541607.71 rows=1066 width=14) (actual time=2013.688..2015.623 rows=285 loops=1)</td>
+      </tr>
+      <tr>
+        <td> Workers Planned: 2</td>
+      </tr>
+      <tr class="odd">
+        <td> Workers Launched: 2</td>
+      </tr>
+      <tr>
+        <td> -&amp;gt; Group (cost=540481.98..540484.65 rows=533 width=14) (actual time=2011.288..2011.316 rows=95 loops=3)</td>
+      </tr>
+      <tr class="odd">
+        <td> Group Key: n.primary_name</td>
+      </tr>
+      <tr>
+        <td> -&amp;gt; Sort (cost=540481.98..540483.31 rows=533 width=14) (actual time=2011.286..2011.292 rows=118 loops=3)</td>
+      </tr>
+      <tr class="odd">
+        <td> Sort Key: n.primary_name</td>
+      </tr>
+      <tr>
+        <td> Sort Method: quicksort Memory: 30kB</td>
+      </tr>
+      <tr class="odd">
+        <td> Worker 0: Sort Method: quicksort Memory: 32kB</td>
+      </tr>
+      <tr>
+        <td> Worker 1: Sort Method: quicksort Memory: 30kB</td>
+      </tr>
+      <tr class="odd">
+        <td> -&amp;gt; Nested Loop (cost=0.43..540457.84 rows=533 width=14) (actual time=26.605..2011.003 rows=118 loops=3)</td>
+      </tr>
+      <tr>
+        <td> -&amp;gt; Parallel Seq Scan on principals p (cost=0.00..535996.00 rows=533 width=10) (actual time=26.526..2008.402 rows=118 loops=3)</td>
+      </tr>
+      <tr class="odd">
+        <td> Filter: (characters ~~ '%Blacksmith%'::text)</td>
+      </tr>
+      <tr>
+        <td> Rows Removed by Filter: 12229107</td>
+      </tr>
+      <tr class="odd">
+        <td> -&amp;gt; Index Scan using names_pkey on names n (cost=0.43..8.37 rows=1 width=24) (actual time=0.018..0.018 rows=1 loops=353)</td>
+      </tr>
+      <tr>
+        <td> Index Cond: (nconst = p.nconst)</td>
+      </tr>
+      <tr class="odd">
+        <td>Planning Time: 0.284 ms</td>
+      </tr>
+      <tr>
+        <td>Execution Time: 2015.728 ms</td>
+      </tr>
+    </table>
+
+    <hr />
+
+    <h1><strong>QUERY Nº 2</strong></h1>
     <span hidden>
       EXPLAIN ANALYSE SELECT * FROM basics b
       JOIN ratings r ON r.tconst = b.tconst
@@ -73,71 +158,69 @@
       <sql>ORDER BY</sql> b.original_title;
     </p>
     <table>
-      <tbody>
-          <tr>
-              <th>QUERY PLAN</th>
-          </tr>
-          <tr class="odd">
-              <td>Gather Merge (cost=200925.70..216679.37 rows=135022 width=155) (actual time=1377.703..1699.059 rows=245288 loops=1)</td>
-          </tr>
-          <tr>
-              <td> Workers Planned: 2</td>
-          </tr>
-          <tr class="odd">
-              <td> Workers Launched: 2</td>
-          </tr>
-          <tr>
-              <td> -> Sort (cost=199925.68..200094.46 rows=67511 width=155) (actual time=1366.372..1449.684 rows=81763 loops=3)</td>
-          </tr>
-          <tr class="odd">
-              <td> Sort Key: b.original_title</td>
-          </tr>
-          <tr>
-              <td> Sort Method: external merge Disk: 14080kB</td>
-          </tr>
-          <tr class="odd">
-              <td> Worker 0: Sort Method: external merge Disk: 14200kB</td>
-          </tr>
-          <tr>
-              <td> Worker 1: Sort Method: external merge Disk: 14600kB</td>
-          </tr>
-          <tr class="odd">
-              <td> -> Parallel Hash Join (cost=17367.84..189200.84 rows=67511 width=155) (actual time=986.628..1150.720 rows=81763 loops=3)</td>
-          </tr>
-          <tr>
-              <td> Hash Cond: (b.tconst = r.tconst)</td>
-          </tr>
-          <tr class="odd">
-              <td> -> Parallel Seq Scan on basics b (cost=0.00..147742.97 rows=564197 width=115) (actual time=0.195..735.156 rows=445253 loops=3)</td>
-          </tr>
-          <tr>
-              <td> Filter: (genres @&amp;gt; '{Comedy}'::text[])</td>
-          </tr>
-          <tr class="odd">
-              <td> Rows Removed by Filter: 1673232</td>
-          </tr>
-          <tr>
-              <td> -> Parallel Hash (cost=11549.57..11549.57 rows=316902 width=20) (actual time=114.186..114.186 rows=253318 loops=3)</td>
-          </tr>
-          <tr class="odd">
-              <td> Buckets: 65536 Batches: 16 Memory Usage: 3168kB</td>
-          </tr>
-          <tr>
-              <td> -> Parallel Seq Scan on ratings r (cost=0.00..11549.57 rows=316902 width=20) (actual time=0.034..66.771 rows=253318 loops=3)</td>
-          </tr>
-          <tr class="odd">
-              <td> Filter: (average_rating &amp;gt; 6.0)</td>
-          </tr>
-          <tr>
-              <td> Rows Removed by Filter: 79198</td>
-          </tr>
-          <tr class="odd">
-              <td>Planning Time: 0.144 ms</td>
-          </tr>
-          <tr>
-              <td>Execution Time: 1735.090 ms</td>
-          </tr>
-      </tbody>
+      <tr>
+        <th>QUERY PLAN</th>
+      </tr>
+      <tr class="odd">
+        <td>Gather Merge (cost=200919.84..216673.51 rows=135022 width=155) (actual time=2444.571..2761.819 rows=245288 loops=1)</td>
+      </tr>
+      <tr>
+        <td> Workers Planned: 2</td>
+      </tr>
+      <tr class="odd">
+        <td> Workers Launched: 2</td>
+      </tr>
+      <tr>
+        <td> -> Sort (cost=199919.82..200088.59 rows=67511 width=155) (actual time=2437.941..2519.104 rows=81763 loops=3)</td>
+      </tr>
+      <tr class="odd">
+        <td> Sort Key: b.original_title</td>
+      </tr>
+      <tr>
+        <td> Sort Method: external merge Disk: 14272kB</td>
+      </tr>
+      <tr class="odd">
+        <td> Worker 0: Sort Method: external merge Disk: 14616kB</td>
+      </tr>
+      <tr>
+        <td> Worker 1: Sort Method: external merge Disk: 13992kB</td>
+      </tr>
+      <tr class="odd">
+        <td> -> Parallel Hash Join (cost=17367.84..189194.98 rows=67511 width=155) (actual time=2052.905..2222.046 rows=81763 loops=3)</td>
+      </tr>
+      <tr>
+        <td> Hash Cond: (b.tconst = r.tconst)</td>
+      </tr>
+      <tr class="odd">
+        <td> -> Parallel Seq Scan on basics b (cost=0.00..147739.34 rows=564135 width=115) (actual time=0.197..1677.279 rows=445253 loops=3)</td>
+      </tr>
+      <tr>
+        <td> Filter: (genres @&amp;gt; '{Comedy}'::text[])</td>
+      </tr>
+      <tr class="odd">
+        <td> Rows Removed by Filter: 1673232</td>
+      </tr>
+      <tr>
+        <td> -> Parallel Hash (cost=11549.57..11549.57 rows=316902 width=20) (actual time=235.350..235.350 rows=253318 loops=3)</td>
+      </tr>
+      <tr class="odd">
+        <td> Buckets: 65536 Batches: 16 Memory Usage: 3168kB</td>
+      </tr>
+      <tr>
+        <td> -> Parallel Seq Scan on ratings r (cost=0.00..11549.57 rows=316902 width=20) (actual time=0.257..175.052 rows=253318 loops=3)</td>
+      </tr>
+      <tr class="odd">
+        <td> Filter: (average_rating &amp;gt; 6.0)</td>
+      </tr>
+      <tr>
+        <td> Rows Removed by Filter: 79198</td>
+      </tr>
+      <tr class="odd">
+        <td>Planning Time: 2.986 ms</td>
+      </tr>
+      <tr>
+        <td>Execution Time: 2797.198 ms</td>
+      </tr>
     </table>
   </body>
 </html>
