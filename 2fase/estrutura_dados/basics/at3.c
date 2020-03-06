@@ -1,12 +1,10 @@
 #include <stdio.h>
 
-int main() {
+void at1() {
+  printf("Produto entre 28 e 45: %d", 28 * 45);  
+}
 
-  // 1
-  printf("\n");
-  printf("Produto entre 28 e 45: %d", 28 * 45);
-
-  // 2
+void at2() {
   float x, y, z, media;
   
   printf("\n");
@@ -19,21 +17,18 @@ int main() {
   media = (x + y + z) / 3;
 
   printf("\nMédia: %.2f", media);
+}
 
-
-  // 3
-  printf("\n");
+void at3() {
   int l;
 
   printf("Insira um valor inteiro: ");
   scanf("%d", &l);
 
   printf("Antecessor: %d, Sucessor: %d", l - 1, l + 1);
+}
 
-
-  // 4
-  printf("\n");
-
+void at4() {
   float a, b;
 
   printf("Insira dois números: ");
@@ -41,18 +36,31 @@ int main() {
   scanf("%f", &b);
 
   printf("\nSoma: %f", a + b);
+}
 
-  // 5
-  printf("\n");
-
+void at5() {
   float t;
 
   printf("Insira um número: ");
   scanf("%f", &t);
 
   printf("Terça parte do número é: %.2f", t / 3);
+}
 
+int main() {
+  at1();
+  printf("\n");
 
+  at2();
+  printf("\n");
+
+  at3();
+  printf("\n");
+
+  at4();
+  printf("\n");
+
+  at5();
   printf("\n");
 
   return 0;
