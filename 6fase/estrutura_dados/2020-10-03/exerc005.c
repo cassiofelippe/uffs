@@ -50,7 +50,7 @@ int play(char a, char b) {
     char win_results[2] = {'s', 'a'};
     return compare(b, win_results);
   } else if (a == 's') {
-    char win_results[2] = {'t', 'p'};
+    char win_results[2] = {'t', 'e'};
     return compare(b, win_results);
   }
 
