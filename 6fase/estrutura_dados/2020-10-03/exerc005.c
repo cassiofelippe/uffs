@@ -10,7 +10,9 @@
 
 #include <stdio.h>
 
-// executa a comparação
+#define MAX_INPUT 100
+
+/* executa a comparação */
 int compare(char b, char results[]) {
   int i;
   for (i = 0; i < 2; i++) {
@@ -29,14 +31,12 @@ int compare(char b, char results[]) {
  -1 = B ganha
 */
 int play(char a, char b) {
-  // se A é igual a B, significa empate
+  /* se A é igual a B, significa empate */
   if (a == b) {
     return 0;
   }
 
-  char win_results[2];
-
-  // "matriz" para determinar quem se o A ganha ou perde
+  /* "matriz" para determinar quem se o A ganha ou perde */
   if (a == 'e') {
     char win_results[2] = {'l', 't'};
     return compare(b, win_results);
@@ -59,7 +59,7 @@ int play(char a, char b) {
     ou não ganhe (matriz acima)
     retorna perda (B ganha)
   */
-  return -1;
+  return 99;
 }
 
 int main() {
@@ -82,10 +82,9 @@ int main() {
    * */
 
   int n, i;
+  char a[MAX_INPUT], b[MAX_INPUT];
   
   scanf("%d\n", &n);
-  
-  char a[n], b[n];
   
   if (n > 100) {
     printf("ERRO! Número não deve ser maior que 100!\n");
