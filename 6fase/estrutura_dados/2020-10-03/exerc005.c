@@ -99,7 +99,6 @@ int main() {
   }
 
   for (i = 0; i < n; i++) {
-    printf("\na = %c, b = %c\n", a[i], b[i]);
     int result = play(a[i], b[i]);
 
     if (result == 1) {
