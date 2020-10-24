@@ -35,12 +35,13 @@ int main() {
    *
    */
 
-  int n, i, student_id[MAX_STUDENTS];
+  int n, i, j, student_id[MAX_STUDENTS];
   char names[MAX_STUDENTS * MAX_NAME_LENGTH],
        list_names[MAX_STUDENTS][MAX_NAME_LENGTH],
        ids_letters[MAX_STUDENTS * MAX_ID_LENGTH],
        list_letters[MAX_STUDENTS][MAX_ID_LENGTH],
        student_fol_name[MAX_STUDENTS][MAX_ID_LENGTH],
+       student_id_tmp[MAX_ID_LENGTH],
        *token = " ";
 
   scanf("%d", &n);
@@ -51,44 +52,34 @@ int main() {
   } 
 
   for (i = 0; i < n; i++) {
-    // printf("%d - %s", i, fgets(names, sizeof(names), stdin));
     strcpy(list_names[i], fgets(names, sizeof(names), stdin));
     names[strcspn(names, "\n")] = '\0';
   }
-
-  // for (i = 0; i < n; i++) {
-  //   printf(">> %s", list_names[i]);
-  // }
 
   scanf("%d", &n);
   getchar();
 
   for (i = 0; i < n; i++) {
-    // printf("%d - %s", i, fgets(ids_letters, sizeof(ids_letters), stdin));
     strcpy(list_letters[i], fgets(ids_letters, sizeof(ids_letters), stdin));
     ids_letters[strcspn(ids_letters, "\n")] = '\0';
   }
-  
-  // for (i = 0; i < n; i++) {
-  //   printf(">> %s", list_letters[i]);
-  // }
 
   for (i = 0; i < n; i++) {
     token = strtok(list_letters[i], " ");
 
     student_id[i] = atoi(token);
 
-    // printf("\nstudent id: %d", student_id[i]);
-
     token = strtok(NULL, " ");
     token[strcspn(token, "\n")] = '\0';
 
     strcpy(student_fol_name[i], token);
-    // printf("\nstudent first or last (fol) name: %s", student_fol_name[i]);
-    // printf("::%s::%s::", student_fol_name[i], "u\0");
-    // printf("\nequals?: %s", strcmp(student_fol_name[i], "u") == 0 ? "true" : "false");
 
-    token = strtok(list_names[student_id[i]], " ");
+    // usado para duplicar a string sem passar o ponteiro
+    for (j = 0; list_names[student_id[i]][j] != '\0'; ++j) {
+      student_id_tmp[j] = list_names[student_id[i]][j];
+    }
+
+    token = strtok(student_id_tmp, " ");
 
     if (strcmp(student_fol_name[i], "u") == 0) {
       token = strtok(NULL, " ");
