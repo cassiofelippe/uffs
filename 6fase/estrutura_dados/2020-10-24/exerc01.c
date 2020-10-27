@@ -54,6 +54,10 @@ int main() {
   for (i = 0; i < n; i++) {
     strcpy(list_names[i], fgets(names, sizeof(names), stdin));
     names[strcspn(names, "\n")] = '\0';
+
+    if (strlen(names) > 40) {
+      return 1;
+    }
   }
 
   scanf("%d", &n);
