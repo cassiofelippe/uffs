@@ -12,9 +12,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_STUDENTS 50
-#define MAX_NAME_LENGTH 42 // 40 + 2
-#define MAX_ID_LENGTH 10
+#define MAX_STUDENTS 100
+#define MAX_NAME_LENGTH 100
+#define MAX_ID_LENGTH 100
 
 int main() {
   /* Dica:
