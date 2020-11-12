@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="pt-br">
+
+	<head>
+        <title> Calculadora Cassio & Lucas </title>
+        <link rel="shortcut icon" href="img/logo.png">
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="css/style.css">
+		<script type="text/javascript" src="js/v2.js"></script>
+
+    </head>
+
+	<body bgcolor="#58ACFA">
+		<div class="inicio">
+			<div class="titulo">
+				<h1>Calculadora de Distribuição Binomial Probabilidade e Estatística</h1>
+				<h2>Alunos: Cassio Felippe e Lucas Tissotti<br> Professor: Leandro Bordin</h2>			
+			</div>
+			<div class="dados">
+					<p>Digite o número de observações ou provas <b>(n)</b>:</p>
+				<input type="text" id="display01" class="display" /> <br>
+					<p>Digite a probabilidade de sucesso em cada observação em valor absoluto <b>(p)</b>: </p>
+				<input type="text" id="display02" class="display" /> <br>
+					<p>Digite o número de sucessos <b>(x)</b>:</p>
+				<input type="text" id="display03" class="display" /> <br>
+			</div>
+
+			<div class="resultados">
+				<p>Seu resultado da Distribuição Binomial (P=X) é:</p>
+				<input type="text" id="display04" class="display" /> <br>
+				<input type="submit" class="bottom" value="Calcular" onclick="calc();"/>
+			</div>
+
+			<div class="resultados">
+				<p>Seu resultado da Distribuição Binomial Acumulada é: </p>
+
+				<div class="radio">
+				  <input type="radio" id="acm-minimo" name="acm-tipo" value=false>
+				  <label for="acm-minimo">Mínimo (P>=X)</label>
+				  <input type="radio" id="acm-maximo" name="acm-tipo" value=true checked>
+				  <label for="acm-maximo">Máximo (P<=X)</label>
+				</div>
+			
+				<input type="text" id="display05" class="display" /><br>
+				<input type="submit" class="bottom" value="Calcular" onclick="calcacm();"/>
+			</div>
+			<br>
+			<div class="clear">
+				<input type="submit" class="bottom" value="Limpar" onclick="displayclean();"/>
+			</div>
+		</div>
+	<footer>		
+		<p>Desenvolvido por Cassio F. e Lucas T. | Todos os Direitos Reservados &nbsp;&nbsp;&copy;</p>
+	</footer>
+	</body>
+
+</html>
