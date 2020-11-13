@@ -14,20 +14,20 @@ int main() {
 	Complex *number = malloc(sizeof(Complex)), *second = malloc(sizeof(Complex)), *sum = malloc(sizeof(Complex));
 	double *a = malloc(sizeof(double)), *b = malloc(sizeof(double));
 
-	scanf("%ld", a);
-	scanf("%ld", b);
+	scanf("%lf", a);
+	scanf("%lf", b);
 
 	set(a, b, number);
 
-	scanf("%ld", a);
-	scanf("%ld", b);
+	scanf("%lf", a);
+	scanf("%lf", b);
 
 	set(a, b, second);
 
 	sum_real_imag(number, second, sum);
 
-	printf("sum real %ld\n", sum->real);
-	printf("sum imag %ld\n", sum->imaginary);
+	printf("sum real %lf\n", sum->real);
+	printf("sum imag %lf\n", sum->imaginary);
 
 	free(number);
 	free(second);

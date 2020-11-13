@@ -21,7 +21,6 @@ void compare_dates(Date *one, Date *two, int *result);
 int main() {
 	Date *birth = malloc(sizeof(Date));
 	Employee *emp = malloc(sizeof(Employee));
-	int *result = malloc(sizeof(int)), *aux = malloc(sizeof(int));
 
 	scanf("%d", &emp->birthdate->day);
 	scanf("%d", &emp->birthdate->month);
