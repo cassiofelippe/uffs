@@ -36,8 +36,7 @@ void scan_date(Date *date);
 int main() {
 
 	Employee *boss = malloc(sizeof(Employee));
-	Employee *emp = malloc(sizeof(Employee));
-	Employee *last = malloc(sizeof(Date));
+	Employee *last = malloc(sizeof(Employee));
 	Date *boss_birthdate = malloc(sizeof(Date));
 
 	int add_another = 1;
@@ -53,20 +52,18 @@ int main() {
 	boss->next = NULL;
 
 	last = boss;
-	boss->next = emp;
-
-	printf("Got it right until here\n");
-	// print_employee(boss);
 
 	while (add_another) {
 		printf("\nWant to add another employee? (1 for YES, 0 for NO)\n");
-		scanf("%d", &add_another);
+		scanf("%d\n", &add_another);
 
-		emp->birthdate = malloc(sizeof(Date));
 
 		if (add_another) {
+			Employee *emp = malloc(sizeof(Employee));
+			emp->birthdate = malloc(sizeof(Date));
+
 			emp->id = last->id + 1;
-			getchar();
+
 			printf("\nInsert the name of the employee: ");
 			fgets(emp->name, sizeof(emp->name), stdin);
 			emp->name[strcspn(emp->name, "\n")] = '\0';
@@ -74,16 +71,18 @@ int main() {
 			printf("Insert the salary: ");
 			scanf("%lf", &emp->salary);
 			emp->next = NULL;
+
+			last->next = emp;
 			last = emp;
-			emp = malloc(sizeof(Employee));
 		}
 	}
 
-	emp = boss;
-
 	printf("\n**************************");
 	printf("\n*   List of Employees    *");
+	printf("\n**************************");
 	
+	Employee *emp = boss;
+
 	for (;EVER;) {
 		if (emp->next == NULL) {
 			EVER = 0;
@@ -93,7 +92,6 @@ int main() {
 		emp = emp->next;
 	}
 
-	print_employee(last);
 	printf("\n**************************");
 
 	free(boss);
