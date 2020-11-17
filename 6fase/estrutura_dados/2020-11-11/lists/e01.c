@@ -57,7 +57,6 @@ int main() {
 		printf("\nWant to add another employee? (1 for YES, 0 for NO)\n");
 		scanf("%d\n", &add_another);
 
-
 		if (add_another) {
 			Employee *emp = malloc(sizeof(Employee));
 			emp->birthdate = malloc(sizeof(Date));
@@ -74,6 +73,8 @@ int main() {
 
 			last->next = emp;
 			last = emp;
+		} else {
+			break;
 		}
 	}
 
