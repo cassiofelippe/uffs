@@ -33,7 +33,7 @@ void print_date(Date *date);
 char* format_date(Date *date);
 void scan_date(Date *date);
 Employee* get_first_employee(Employee *emp);
-Employee delete_employee(Employee *emp);
+Employee* delete_employee(int id, Employee *emp);
 
 /* MAIN */
 
@@ -70,9 +70,16 @@ int main() {
 		scanf("\n");
 	}
 
-	aux = get_first_employee(aux);
+	print_all_employees(get_first_employee(aux));
+	
+	printf("\nWhich one do you want to delete?\n");
+	scanf("%d\n", &n_records);
 
-	print_all_employees(aux);
+	aux = delete_employee(n_records, aux);
+
+	printf("\nreturned first employee: %d\n", aux->id);
+
+	print_all_employees(get_first_employee(aux));
 
 	free(aux);
 
@@ -143,11 +150,45 @@ void scan_date(Date *date) {
 Employee* get_first_employee(Employee *emp) {
 	// get the first inserted
 	for (;EVER;) {
-		emp = emp->prev;
 		if (emp->prev == NULL) {
 			break;
+		} else {
+			emp = emp->prev;
 		}
 	}
 	
 	return emp;
+}
+
+Employee* delete_employee(int id, Employee *emp) {
+	Employee *first = get_first_employee(emp);
+	Employee *last = malloc(sizeof(Employee)), *delete = malloc(sizeof(Employee));
+
+	emp = first;
+
+	for (;EVER;) {
+		if (emp->id == id) {
+			delete = emp;
+		}
+
+		if (emp->next == NULL) {
+			last = emp;
+			break;
+		}
+
+		emp = emp->next;
+	}
+
+	if (first->id == delete->id) {
+		delete->next->prev = NULL;
+		first = delete->next;
+	} else if (last->id == delete->id) {
+		delete->prev->next = NULL;
+	} else {
+		delete->prev->next = delete->next;
+	}
+
+	free(delete);
+	
+	return first;
 }
