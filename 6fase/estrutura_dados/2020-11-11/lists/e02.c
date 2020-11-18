@@ -34,6 +34,7 @@ char* format_date(Date *date);
 void scan_date(Date *date);
 Employee* get_first_employee(Employee *emp);
 Employee* delete_employee(int id, Employee *emp);
+Employee* get_employee_by_id(int id, Employee *emp);
 
 /* MAIN */
 
@@ -80,6 +81,14 @@ int main() {
 	printf("\nreturned first employee: %d\n", aux->id);
 
 	print_all_employees(get_first_employee(aux));
+	
+	// using variable n_records only to avoid declaring another
+	scanf("%d\n", &n_records);
+	printf("\n\n**************************");
+	printf("\n**  Employee with ID %d ", n_records);
+	printf("%s", n_records > 9 ? "**" : " **");
+	printf("\n**************************");
+	print_employee(get_employee_by_id(n_records, aux));
 
 	free(aux);
 
@@ -190,4 +199,18 @@ Employee* delete_employee(int id, Employee *emp) {
 	free(delete);
 	
 	return first;
+}
+
+Employee* get_employee_by_id(int id, Employee *emp) {
+	emp = get_first_employee(emp);
+
+	for (;EVER;) {
+		if (emp->id == id) {
+			break;
+		} else {
+			emp = emp->next;
+		}
+	}
+	
+	return emp;
 }
