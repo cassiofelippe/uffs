@@ -38,7 +38,7 @@ Employee* delete_employee(int id, Employee *emp);
 /* MAIN */
 
 int main() {
-	int n_records, i, test;
+	int n_records, i;
 
 	Employee *aux = malloc(sizeof(Employee));
 	aux->id = 0;
@@ -114,8 +114,7 @@ void print_employee(Employee *emp) {
 		emp->id,
 		emp->name,
 		format_date(emp->birthdate),
-		emp->salary,
-		emp->prev != NULL ? emp->prev->id : -1
+		emp->salary
 	);
 	printf("\n**************************");
 }
