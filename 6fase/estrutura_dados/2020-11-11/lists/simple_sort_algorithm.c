@@ -28,7 +28,6 @@ int main() {
 	return 0;
 }
 
-/* param num must be the first of the array */
 void sort(int *a, int i) {
 	int aux, j = i - 1;
 
