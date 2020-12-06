@@ -32,7 +32,7 @@ int main() {
 
 	print_all(get_first(first));
 
-	sort(first);
+	sort(&first);
 
 	print_all(get_first(first));
 
@@ -87,40 +87,42 @@ void print_all(Integer *first) {
 
 /* param num must be the first of the list */
 void sort(Integer *num) {
-	printf("\n\nbeen here for %d", num->value);
-	if (num->next == NULL) {
+	printf("\n\nbeen here for %d", *num->value);
+
+	if (*num->prev == NULL) {
+		return sort(&(*num)->next);
+	} else if ((*num)->next == NULL) {
 		return;
 	}
 	
-	// Integer *aux = malloc(sizeof(Integer));
-	Integer *aux = num->next, *aux_copy = malloc(sizeof(Integer));
+	printf("\nprev %d", *num->prev->value);
+	printf("\nnext %d", *num->next->value);
+	
 
-	printf("\nprev %d | next %d", num->prev != NULL ? num->prev->value : -1, num->next->value);
+	// printf("\nprev %d | next %d", num->prev != NULL ? num->prev->value : -1, num->next->value);
 
-	if (num->value > num->next->value) {
-		memcpy(aux_copy, num->next, sizeof(Integer));
+	if (*num->prev->value > *num->value) {
+		// memcpy(aux_copy, num->next, sizeof(Integer)); // deep copy, without referencing pointer
+		// free(aux_copy);
+		Integer *tmp = *num;
 
-		if (num->prev != NULL) {
-			num->prev->next = num->next;
-		}
+		tmp->prev = *num->prev;
+		tmp->next->prev = tmp;
 
-		printf("\n1");
-		num->next = num->next->next;
-		printf("\n2");
-		aux->prev = num->prev;
-		printf("\n3");
-		num->prev = aux;
-		printf("\n4");
-		aux_copy->next->prev = num;
-		printf("\n5");
+		*num = *num->prev;
 
-		free(aux_copy);
+		tmp->next = *num->next;
+		*num->prev->prev = *num->prev;
+		*num->prev->next = *num->next;
 
-		printf("\n>> prev %d | next %d", num->prev != NULL ? num->prev->value : -1, num->next->value);
+		*num->prev = tmp->prev;
+		*num->next = tmp;
 
-		return sort(num);
+		// printf("\n>> prev %d | next %d", num->prev != NULL ? num->prev->value : -1, num->next->value);
+
+		return sort(&(*num));
 	} else {
-		return sort(num->next);
+		return sort(&(*num)->next);
 	}
 }
 
