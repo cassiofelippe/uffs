@@ -34,16 +34,23 @@ void remove_all(Integer *queue);
 
 int main() {
     int n, O, I;
+    char input[10];
     Integer *queue;
 
-    scanf("%d", &n);
+    scanf("%d\n", &n);
 
     if (n < 2) {
         return 1;
     }
 
     for (int i = 1; i <= n; i++) {
-        scanf("%d", &O);
+        // scanf("%d", &O);
+        fgets(input, sizeof(input), stdin);
+        input[strcspn(input, "\n")] = '\0';
+
+        O = atoi(&input[0]);
+
+        printf("\nstring: %s\n", input);
 
         /* first operation, queue must be 1 */
         if (i == 1 && O != 1) {
@@ -62,7 +69,8 @@ int main() {
 
         /* if operation is 2 or 3, must insert I */
         if (O == 2 || O == 3) {
-            scanf("%d", &I);
+            I = atoi(&input[2]);
+            // scanf("%d", &I);
         }
 
         switch(O) {
