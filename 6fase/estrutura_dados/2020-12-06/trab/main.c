@@ -25,6 +25,9 @@ Integer* get_first(Integer *queue);
 Integer* get_last(Integer *queue);
 Integer* insert_beginning(Integer *queue, int value);
 Integer* insert_end(Integer *queue, int value);
+Integer* remove_beginning(Integer *queue);
+Integer* remove_end(Integer *queue);
+void remove_all(Integer *queue);
 
 
 /* MAIN */
@@ -79,17 +82,17 @@ int main() {
             }
 
             case 4: {
-                // TODO remove init
+                queue = remove_beginning(queue);
                 break;
             }
 
             case 5: {
-                // TODO remove end
+                queue = remove_end(queue);
                 break;
             }
 
             case 6: {
-                // TODO free
+                remove_all(queue);
                 break;
             }
 
@@ -101,6 +104,7 @@ int main() {
                 }
             }
         }
+        print_all(queue); // TODO remove it
     }
     
     print_all(queue); // TODO remove it
@@ -114,7 +118,7 @@ int main() {
 void print_all(Integer *queue) {
     Integer *first = get_first(queue);
 
-    printf("\n - first %d - \n", first->value);
+    printf("\n - first %d -", first->value);
     printf("\n - printing it all - \n");
     while (first != NULL) {
         printf("%d ", first->value);
@@ -124,14 +128,10 @@ void print_all(Integer *queue) {
 }
 
 Integer* initialize() {
-    int aux;
-
     Integer *first = malloc(sizeof(Integer));
 
-    scanf("\n%d", &aux);
-
     first->prev = NULL;
-    first->value = aux;
+    first->value = '\0';
     first->next = NULL;
 
     return first;
@@ -155,25 +155,65 @@ Integer* get_last(Integer *queue) {
 
 Integer* insert_beginning(Integer *queue, int value) {
     Integer *new_first = malloc(sizeof(Integer));
-    
     queue = get_first(queue);
-    new_first->prev = NULL;
-    new_first->value = value;
-    new_first->next = queue;
-    queue->prev = new_first;
-    
-    return new_first;
+
+    if (queue->value == '\0') {
+        queue->value = value;
+        return queue;
+    } else {
+        new_first->next = queue;
+        new_first->value = value;
+        new_first->prev = NULL;
+        queue->prev = new_first;
+        return new_first;
+    }
 }
 
 Integer* insert_end(Integer *queue, int value) {
-    Integer *new_last = malloc(sizeof(Integer));
-
-
     queue = get_last(queue);
-    new_last->prev = queue;
-    new_last->value = value;
-    new_last->next = NULL;
-    queue->next = new_last;
+    
+    if (queue->value == '\0') {
+        queue->value = value;
+        return queue;
+    } else {
+        Integer *new_last = malloc(sizeof(Integer));
+        new_last->prev = queue;
+        new_last->value = value;
+        new_last->next = NULL;
+        queue->next = new_last;
+        return new_last;
+    }
+}
 
-    return new_last;
+Integer* remove_beginning(Integer *queue) {
+    Integer *aux = malloc(sizeof(Integer));
+    queue = get_first(queue);
+    queue->next->prev = NULL;
+
+    aux = queue->next;
+    free(queue);
+
+    return aux;
+}
+
+Integer* remove_end(Integer *queue) {
+    Integer *aux = malloc(sizeof(Integer));
+    queue = get_last(queue);
+    queue->prev->next = NULL;
+
+    aux = queue->prev;
+    free(queue);
+
+    return aux;
+}
+
+void remove_all(Integer *queue) {
+    queue = get_first(queue);
+    
+    while(queue->next != NULL) {
+        queue = queue->next;
+        free(queue->prev);
+    }
+
+    free(queue);
 }
