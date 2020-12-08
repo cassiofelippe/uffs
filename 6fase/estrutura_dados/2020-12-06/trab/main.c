@@ -28,6 +28,7 @@ Integer* insert_end(Integer *queue, int value);
 Integer* remove_beginning(Integer *queue);
 Integer* remove_end(Integer *queue);
 void remove_all(Integer *queue);
+int count(Integer *queue);
 
 
 /* MAIN */
@@ -49,8 +50,6 @@ int main() {
         input[strcspn(input, "\n")] = '\0';
 
         O = atoi(&input[0]);
-
-        printf("\nstring: %s\n", input);
 
         /* first operation, queue must be 1 */
         if (i == 1 && O != 1) {
@@ -105,17 +104,20 @@ int main() {
             }
 
             default: {
-                printf("\nbeen here");
+                if (queue == NULL) {
+                    return 0;
+                }
+
                 if (i == 0) {
-                    print_all(queue); // TODO remove it
+                    // print_all(queue); // TODO remove it
                     return 1;
                 }
             }
         }
-        print_all(queue); // TODO remove it
+        // print_all(queue); // TODO remove it
     }
     
-    print_all(queue); // TODO remove it
+    // print_all(queue); // TODO remove it
 
     return 0;
 }
@@ -126,13 +128,9 @@ int main() {
 void print_all(Integer *queue) {
     Integer *first = get_first(queue);
 
-    printf("\n - first %d -", first->value);
-    printf("\n - printing it all - \n");
     while (first != NULL) {
-        printf("%d ", first->value);
         first = first->next;
     }
-    printf("\n");
 }
 
 Integer* initialize() {
@@ -146,6 +144,10 @@ Integer* initialize() {
 }
 
 Integer* get_first(Integer *queue) {
+    if (queue == 0) {
+        return NULL;
+    }
+
     if (queue->prev != NULL) {
         return get_first(queue->prev);
     } else {
@@ -194,6 +196,17 @@ Integer* insert_end(Integer *queue, int value) {
 }
 
 Integer* remove_beginning(Integer *queue) {
+    printf("\n%d", get_first(queue)->value);
+
+    if (queue == NULL) {
+        return NULL;
+    }
+
+    if (queue->prev == NULL && queue->next == NULL) {
+        free(queue);
+        return NULL;
+    }
+
     Integer *aux = malloc(sizeof(Integer));
     queue = get_first(queue);
     queue->next->prev = NULL;
@@ -201,10 +214,22 @@ Integer* remove_beginning(Integer *queue) {
     aux = queue->next;
     free(queue);
 
+
     return aux;
 }
 
 Integer* remove_end(Integer *queue) {
+    printf("\n%d", queue->value);
+
+    if (queue == NULL) {
+        return NULL;
+    }
+
+    if (queue->prev == NULL && queue->next == NULL) {
+        free(queue);
+        return NULL;
+    }
+
     Integer *aux = malloc(sizeof(Integer));
     queue = get_last(queue);
     queue->prev->next = NULL;
@@ -216,6 +241,17 @@ Integer* remove_end(Integer *queue) {
 }
 
 void remove_all(Integer *queue) {
+    printf("\n%d", count(queue));
+
+    if (queue == NULL) {
+        return;
+    }
+
+    if (queue->prev == NULL && queue->next == NULL) {
+        free(queue);
+        return;
+    }
+
     queue = get_first(queue);
     
     while(queue->next != NULL) {
@@ -224,4 +260,19 @@ void remove_all(Integer *queue) {
     }
 
     free(queue);
+}
+
+int count(Integer *queue) {
+    int i;
+    queue = get_first(queue);
+
+    if (queue == NULL) {
+        return 0;
+    }
+
+    for (i = 0; queue->next != NULL; i++) {
+        queue = queue->next;
+    }
+
+    return ++i;
 }
