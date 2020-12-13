@@ -6,6 +6,8 @@
 #define N 1000
 #define LINE_LIMIT 10
 #define EVER 1
+#define true 1
+#define false 0
 
 
 /* STRUCTS */
@@ -37,22 +39,31 @@ typedef struct {
 
 /* METHOD DECLARATIONS */
 
-List* read_entry();
+int read_entry();
 Integer* insert_at_end(List *list, int value);
 Integer* insert_at_beginning(List *list, int value);
 void remove_first(List *list);
 void remove_last(List *list);
+void remove_middle(List *list, int value);
 void print_all(List *list);
 void print_all_inverted(List *list);
 int size_of(List *list);
 int index_of(List *list, int value);
+int contains(List *list, int value);
 
 
 int main() {
-    List *result = malloc(sizeof(List));
-    int i;
+    int n;
 
-    result = read_entry();
+    do {
+        n = read_entry();
+        printf(">>\n");
+        printf(">>\n");
+        printf(">>\n");
+        printf(">>\n");
+        printf(">>\n");
+
+    } while (n != 0);
 
     printf("\n");
 
@@ -62,19 +73,24 @@ int main() {
 
 /* METHODS */
 
-List* read_entry() {
-    int i = 0, n, value, index;
+int read_entry() {
+    int i = 0, n, value = 0, index;
     char line[LINE_LIMIT], operation;
-    List* result = malloc(sizeof(List));
+    List *result = malloc(sizeof(List));
+    OperationData *operations = (OperationData*) calloc(6, sizeof(boolean));
 
     scanf("%d\n", &n);
 
     do {
+        int removed = 0;
         fgets(line, sizeof(line), stdin);
         line[strcspn(line, "\n")] = '\0';
 
         if (line[0] != 'I' && line[0] != 'R') {
             value = atoi(&line[0]);
+            if (value == 0) {
+                break;
+            }
         } else {
             operation = line[0];
             value = atoi(&line[2]);
@@ -83,11 +99,56 @@ List* read_entry() {
                 insert_at_end(result, value);
             } else if (operation == 'R') {
                 index = index_of(result, value);
+
+                if (index == 0) {
+                    operations->removed_from_beginning += true;
+                    if (contains(result, value)) {
+                        remove_first(result);
+                    }
+                    removed++;
+                }
+
+                if (index == size_of(result) - 1 || result == NULL) {
+                    operations->removed_from_end += true;
+                    if (contains(result, value)) {
+                        remove_last(result);
+                    }
+                    removed++;
+                }
+
+                if (removed == 0) {
+                    operations->removed_from_middle += true;
+                    if (contains(result, value)) {
+                        remove_middle(result, value);
+                    }
+                }
             }
         }
-    } while (value != 0 || i == n);
 
-    return result;
+        i++;
+    } while (i < n);
+
+    // printf("\nrfb %d\nrfm: %d\nrfe: %d\n\n",
+    //     operations->removed_from_beginning,
+    //     operations->removed_from_middle,
+    //     operations->removed_from_end
+    // );
+
+    printf("\n");
+
+    if (operations->removed_from_beginning && operations->removed_from_end <= 1) {
+        printf("fila!\n");
+    } else if (operations->removed_from_end && operations->removed_from_beginning <= 1) {
+        printf("pilha!\n");
+    } else if (operations->removed_from_middle) {
+        printf("jokerBag!\n");
+    } else {
+        printf("nem Turing sabe!\n");
+    }
+    
+    printf("\n");
+
+    return value;
 }
 
 Integer* insert_at_end(List *list, int value) {
@@ -155,7 +216,6 @@ void remove_first(List *list) {
     }
 }
 
-
 void remove_last(List *list) {
     Integer *aux = list->last;
     if (list->last != NULL && list->last->prev != NULL) {
@@ -171,6 +231,24 @@ void remove_last(List *list) {
         free(aux);
         list->last = NULL;
         list->first = NULL;
+    }
+}
+
+void remove_middle(List *list, int value) {
+    if (!contains(list, value)) {
+        return;
+    }
+
+    Integer *aux = list->first;
+
+    for (;EVER;) {
+        if (aux->value == value) {
+            aux->prev->next = aux->next;
+            free(aux);
+            return;
+        }
+
+        aux = aux->next;
     }
 }
 
@@ -213,6 +291,10 @@ int index_of(List *list, int value) {
     Integer *aux = list->first;
     int i = 0;
 
+    if (!contains(list, value)) {
+        return 0;
+    }
+
     for (;EVER; i++) {
         if (aux->value == value) {
             break;
@@ -222,4 +304,20 @@ int index_of(List *list, int value) {
     }
 
     return i;
+}
+
+int contains(List *list, int value) {
+    Integer *aux = list->first;
+
+    for (;EVER; aux = aux->next) {
+        if (aux == NULL) {
+            break;
+        }
+
+        if (aux->value == value) {
+            return true;
+        }
+    }
+
+    return false;
 }
