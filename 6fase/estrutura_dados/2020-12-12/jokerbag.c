@@ -58,7 +58,95 @@ int main() {
     scanf("%d\n", &n);
     
     do {
-        execute(n);
+        // printf("been here first loop\n");
+        int i = 0, value = 0, index;
+        char line[LINE_LIMIT], operation;
+        List *result = malloc(sizeof(List));
+        OperationData *operations = (OperationData*) calloc(6, sizeof(boolean));
+
+        do {
+            int removed = 0;
+            fgets(line, sizeof(line), stdin);
+            line[strcspn(line, "\n")] = '\0';
+
+            if (line[0] != 'I' && line[0] != 'R') {
+                value = atoi(&line[0]);
+                if (value == 0) {
+                    break;
+                }
+            } else {
+                operation = line[0];
+                value = atoi(&line[2]);
+                
+                if (operation == 'I') {
+                    insert_at_end(result, value);
+                } else if (operation == 'R') {
+                    index = index_of(result, value);
+
+                    if (index == 0 && contains(result, value)) {
+                        operations->removed_from_beginning += true;
+                        remove_first(result);
+                        removed++;
+                        index = index_of(result, value);
+                    }
+
+                    if (((index == 0 ? true : index == size_of(result) - 1) && contains(result, value)) || size_of(result) == 0) {
+                        operations->removed_from_end += true;
+                        remove_last(result);
+                        removed++;
+                    }
+
+                    if (removed == 0) {
+                        operations->removed_from_middle += true;
+                        if (contains(result, value)) {
+                            remove_middle(result, value);
+                        }
+                    }
+                }
+                // print_all(result);
+            }
+
+            i++;
+        } while (i < n);
+
+        // printf("\nremoved from...\nbeginning %d\nmiddle: %d\nend: %d\n\n",
+        //     operations->removed_from_beginning,
+        //     operations->removed_from_middle,
+        //     operations->removed_from_end
+        // );
+
+        if ((!operations->removed_from_middle &&
+                (operations->removed_from_end || operations->removed_from_beginning) &&
+                operations->removed_from_beginning <= 1 &&
+                operations->removed_from_end <= 1
+            ) || (
+                !operations->removed_from_beginning &&
+                !operations->removed_from_middle &&
+                !operations->removed_from_end
+            )) {
+            printf("nem Turing sabe!\n");
+        } else {
+            if (operations->removed_from_beginning &&
+                operations->removed_from_end <= 1 &&
+                !operations->removed_from_middle
+            ) { /* can remove one from end because the last
+                   element counts for beginning and end */
+                printf("fila!\n");
+            } else if (
+                operations->removed_from_end &&
+                operations->removed_from_beginning <= 1 &&
+                !operations->removed_from_middle
+            ) { /* pilha can remove one from beginning,
+                   cause when it removes the last elements
+                   it counts to beginning and end */
+                printf("pilha!\n");
+            } else if (operations->removed_from_middle) {
+                printf("jokerBag!\n");
+            } else {
+                printf("nem Turing sabe!\n");
+            }
+        }
+
         scanf("%d\n", &n);
     } while (n != 0);
 
@@ -69,77 +157,7 @@ int main() {
 /* METHODS */
 
 void execute(int n) {
-    int i = 0, value = 0, index;
-    char line[LINE_LIMIT], operation;
-    List *result = malloc(sizeof(List));
-    OperationData *operations = (OperationData*) calloc(6, sizeof(boolean));
-
-    do {
-        int removed = 0;
-        fgets(line, sizeof(line), stdin);
-        line[strcspn(line, "\n")] = '\0';
-
-        if (line[0] != 'I' && line[0] != 'R') {
-            value = atoi(&line[0]);
-            if (value == 0) {
-                break;
-            }
-        } else {
-            operation = line[0];
-            value = atoi(&line[2]);
-            
-            if (operation == 'I') {
-                insert_at_end(result, value);
-            } else if (operation == 'R') {
-                index = index_of(result, value);
-
-                if (index == 0 && contains(result, value)) {
-                    operations->removed_from_beginning += true;
-                    remove_first(result);
-                    removed++;
-                    index = index_of(result, value);
-                }
-
-                if (((index == 0 ? true : index == size_of(result) - 1) && contains(result, value)) || result == NULL) {
-                    operations->removed_from_end += true;
-                    remove_last(result);
-                    removed++;
-                }
-
-                if (removed == 0) {
-                    operations->removed_from_middle += true;
-                    if (contains(result, value)) {
-                        remove_middle(result, value);
-                    }
-                }
-            }
-        }
-
-        i++;
-    } while (i < n);
-
-    // printf("\nremoved from...\nbeginning %d\nmiddle: %d\nend: %d\n\n",
-    //     operations->removed_from_beginning,
-    //     operations->removed_from_middle,
-    //     operations->removed_from_end
-    // );
-
-    if (operations->removed_from_beginning &&
-        operations->removed_from_end <= 1 &&
-        !operations->removed_from_middle
-    ) {
-        printf("fila!\n");
-    } else if (
-        operations->removed_from_end &&
-        operations->removed_from_beginning <= 1 &&
-        !operations->removed_from_middle
-    ) {
-        printf("pilha!\n");
-    } else if (operations->removed_from_middle) {
-        printf("jokerBag!\n");
-    } else {
-        printf("nem Turing sabe!\n");
-    }
+    
 }
 
 Integer* insert_at_end(List *list, int value) {
@@ -194,14 +212,14 @@ void remove_first(List *list) {
     if (list->first != NULL && list->first->next != NULL) {
         aux->next->prev = NULL;
         list->first = aux->next;
-        free(aux);
+        // free(aux);
 
         // if the list contains only one element
         if (list->first->next == NULL) {
             list->last = list->first;
         }
     } else if (list->first != NULL) {
-        free(aux);
+        // free(aux);
         list->last = NULL;
         list->first = NULL;
     }
@@ -212,14 +230,14 @@ void remove_last(List *list) {
     if (list->last != NULL && list->last->prev != NULL) {
         aux->prev->next = NULL;
         list->last = aux->prev;
-        free(aux);
+        // free(aux);
 
         // if the list contains only one element
         if (list->last->prev == NULL) {
             list->first = list->last;
         }
     } else if (list->last != NULL) {
-        free(aux);
+        // free(aux);
         list->last = NULL;
         list->first = NULL;
     }
@@ -235,7 +253,7 @@ void remove_middle(List *list, int value) {
     for (;EVER;) {
         if (aux->value == value) {
             aux->prev->next = aux->next;
-            free(aux);
+            // free(aux);
             return;
         }
 
@@ -264,6 +282,10 @@ void print_all_inverted(List *list) {
 }
 
 int size_of(List *list) {
+    if (list == NULL) {
+        return 0;
+    }
+
     Integer *aux = list->first;
     int i = 0;
 
@@ -280,21 +302,21 @@ int size_of(List *list) {
 
 int index_of(List *list, int value) {
     Integer *aux = list->first;
-    int i = 0;
+    int i = 0, index = -1;
 
     if (!contains(list, value)) {
-        return 0;
+        return -1;
     }
 
-    for (;EVER; i++) {
+    for (;aux != NULL; i++) {
         if (aux->value == value) {
-            break;
+            index = i;
         }
 
         aux = aux->next;
     }
 
-    return i;
+    return index;
 }
 
 int contains(List *list, int value) {

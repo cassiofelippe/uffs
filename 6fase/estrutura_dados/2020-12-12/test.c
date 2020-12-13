@@ -85,7 +85,6 @@ void remove_middle(List *list, int value) {
     Integer *aux = list->first;
 
     for (;EVER;) {
-        printf("been here %d\n", aux->value);
         if (aux->value == value) {
             aux->prev->next = aux->next;
             free(aux);
