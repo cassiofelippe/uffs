@@ -39,7 +39,7 @@ typedef struct {
 
 /* METHOD DECLARATIONS */
 
-int read_entry();
+void execute();
 Integer* insert_at_end(List *list, int value);
 Integer* insert_at_beginning(List *list, int value);
 void remove_first(List *list);
@@ -55,17 +55,12 @@ int contains(List *list, int value);
 int main() {
     int n;
 
+    scanf("%d\n", &n);
+    
     do {
-        n = read_entry();
-        printf(">>\n");
-        printf(">>\n");
-        printf(">>\n");
-        printf(">>\n");
-        printf(">>\n");
-
+        execute(n);
+        scanf("%d\n", &n);
     } while (n != 0);
-
-    printf("\n");
 
     return 0;
 }
@@ -73,13 +68,11 @@ int main() {
 
 /* METHODS */
 
-int read_entry() {
-    int i = 0, n, value = 0, index;
+void execute(int n) {
+    int i = 0, value = 0, index;
     char line[LINE_LIMIT], operation;
     List *result = malloc(sizeof(List));
     OperationData *operations = (OperationData*) calloc(6, sizeof(boolean));
-
-    scanf("%d\n", &n);
 
     do {
         int removed = 0;
@@ -134,8 +127,6 @@ int read_entry() {
     //     operations->removed_from_end
     // );
 
-    printf("\n");
-
     if (operations->removed_from_beginning && operations->removed_from_end <= 1) {
         printf("fila!\n");
     } else if (operations->removed_from_end && operations->removed_from_beginning <= 1) {
@@ -145,10 +136,6 @@ int read_entry() {
     } else {
         printf("nem Turing sabe!\n");
     }
-    
-    printf("\n");
-
-    return value;
 }
 
 Integer* insert_at_end(List *list, int value) {
