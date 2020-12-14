@@ -120,15 +120,11 @@ int main() {
 /* METHODS */
 
 boolean E(int v1, int v2) {
-    int _v1 = v1 == 'v';
-    int _v2 = v2 == 'v';
-    return _v1 && _v2;
+    return v1 && v2;
 }
 
 boolean O(int v1, int v2) {
-    int _v1 = v1 == 'v';
-    int _v2 = v2 == 'v';
-    return _v1 && _v2;
+    return v1 || v2;
 }
 
 boolean X(int v1, int v2) {
@@ -142,26 +138,27 @@ boolean N(int v) {
 boolean mount_stage(List *values, List *operators) {
     Boolean *op_aux = operators->first;
     Boolean *val_aux = values->first;
-    boolean result, v1, v2;
+    boolean v1, v2;
 
+    v1 = val_aux->value == 'v' ? true : false;
+    
     while (op_aux != NULL) {
-        v1 = val_aux->value == 'v' ? true : false;
         v2 = val_aux->next->value == 'v' ? true : false;
         switch (op_aux->value) {
             case 'E': {
-                result = E(v1, v2);
+                v1 = E(v1, v2);
                 break;
             }
             case 'O': {
-                result = O(v1, v2);
+                v1 = O(v1, v2);
                 break;
             }
             case 'X': {
-                result = X(v1, v2);
+                v1 = X(v1, v2);
                 break;
             }
             case 'N': {
-                result = N(v1);
+                v1 = N(v1);
                 break;
             }
             default: {}
@@ -174,7 +171,7 @@ boolean mount_stage(List *values, List *operators) {
         op_aux = op_aux->next;
     }
 
-    return result;
+    return v1;
 }
 
 Boolean* insert(List *list, char value) {
