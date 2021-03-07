@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <string.h>
 
 #define SIZE 3
-
+#define LINE 100
 
 void sort(int *v, int size, int i) {
 	int aux;
@@ -32,17 +32,38 @@ void print(int *v, int size) {
 }
 
 void sort_and_print(int *v, int size) {
-	sort(v, size, 0);
+	int *copy = malloc(sizeof(int) * size), i;
+
+	for (i = 0; i < size; i++) {
+		copy[i] = v[i];
+	}
+
+	sort(copy, size, 0);
+
+	print(copy, size);
+
+	printf("\n");
 
 	print(v, size);
 }
 
 
 int main() {
-	int size = SIZE, i, *inputs = malloc(sizeof(int)*size);
+	int size = SIZE, *inputs = malloc(sizeof(int) * size), n, i;
+	char *line = malloc(sizeof(char) * LINE), *token, c[2] = " ";
 
-	for (i = 0; i < size; i++) {
-		scanf("%d", &inputs[i]);
+    fgets(line, sizeof(line) + 1, stdin);
+    line[strcspn(line, "\n")] = '\0';
+
+    token = strtok(line, c);
+
+    /* convert line attributes to array items */
+	for (i = 0; token != NULL; i++) {
+    	n = (int) atoi(token);
+
+    	inputs[i] = n;
+
+		token = strtok(NULL, c);
 	}
 
 	sort_and_print(inputs, size);
