@@ -13,9 +13,7 @@ int main() {
 
 	for (i = 0; i < SIZE; i++) {
 		scanf("%d", &input[i]);
-	}
 
-	for (i = 0; i < SIZE; i++) {
 		if (input[i] <= 0) {
 			input[i] = 1;
 		}
