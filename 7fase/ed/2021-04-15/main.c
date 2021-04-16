@@ -12,7 +12,7 @@ https://moodle-academico.uffs.edu.br/mod/assign/view.php?id=342435
 #include <stdlib.h>
 #include <string.h>
 
-#define LINE_LIMIT 1000
+#define LINE_LIMIT 12
 
 /* structs */
 
@@ -27,6 +27,7 @@ struct aluno {
     char nome[40];
     Date* nascimento;
     float media;
+    struct aluno* next;
 };
 
 typedef struct aluno Aluno;
@@ -43,15 +44,44 @@ void menu() {
 
 }
 
-void print_date(Date* date) {
-    printf("%d/%d/%d\n", date->dia, date->mes, date->ano);
+char* format_date(Date* date) {
+    char* formatted = malloc(sizeof(char) * LINE_LIMIT);
+
+    snprintf(formatted, sizeof(char) * LINE_LIMIT, "%d/%d/%d", date->dia, date->mes, date->ano);
+    // printf("%d/%d/%d\n", date->dia, date->mes, date->ano);
+    return formatted;
+}
+
+void print_aluno(Aluno* aluno) {
+    printf("%s, %s, %s, %.2f\n",
+        aluno->matricula,
+        aluno->nome,
+        format_date(aluno->nascimento),
+        aluno->media
+    );
+}
+
+void print_list(List* alunos) {
+    if (alunos->head == NULL) {
+        printf("Lista Vazia!\n");
+        return;
+    }
+
+    Aluno* aux = malloc(sizeof(Aluno));
+    aux = alunos->head;
+
+    print_aluno(aux);
+
+    while (aux->next != NULL) {
+        aux = aux->next;
+        print_aluno(aux);
+    }
 }
 
 void read_birth(Aluno* aluno) {
     aluno->nascimento = malloc(sizeof(Aluno));
-    char input[LINE_LIMIT], day[2], month[2], year[4];
+    char input[LINE_LIMIT];
     char* token = malloc(sizeof(char) * LINE_LIMIT), key[2] = "/";
-    int i;
 
     fgets(input, sizeof(input), stdin);
     input[strcspn(input, "\n")] = '\0';
@@ -75,16 +105,27 @@ Aluno* insert(List* alunos) {
     fgets(aluno->nome, sizeof(aluno->nome), stdin);
     aluno->nome[strcspn(aluno->nome, "\n")] = '\0';
 
-    // printf("%s\n", aluno->matricula);
-    printf("%s - %s\n", aluno->matricula, aluno->nome);
-
     read_birth(aluno);
-
-    print_date(aluno->nascimento);
 
     scanf("%f", &aluno->media);
     
-    printf("%.2f\n", aluno->media);
+    aluno->next = NULL;
+
+    if (alunos->head == NULL) {
+        alunos->head = aluno;
+        alunos->tail = aluno;
+    } else {
+        Aluno* aux = malloc(sizeof(Aluno));
+        aux = alunos->head;
+        while (aux->next != NULL) {
+            aux = aux->next;
+        }
+
+        printf("%s\n", aluno->matricula);
+
+        aux->next = aluno;
+        alunos->tail = aluno;
+    }
 
     return aluno;
 }
@@ -100,6 +141,12 @@ int main () {
     scanf("%d\n", &n);
 
     insert(alunos);
+    
+    scanf("%d\n", &n);
+    
+    insert(alunos);
+
+    print_list(alunos);
 
     return 0;
 }
