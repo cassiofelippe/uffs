@@ -78,6 +78,29 @@ void print_list(List* alunos) {
     }
 }
 
+/* ideia de usar recursividade para resolver essa questão baseada na seguinte fonte:
+https://www.geeksforgeeks.org/print-reverse-of-a-linked-list-without-actually-reversing/
+*/
+void print_list_inverted_pos(Aluno* aluno) {
+    if (aluno == NULL) {
+        return;
+    }
+
+    print_list_inverted_pos(aluno->next);
+
+    print_aluno(aluno);
+}
+
+void print_list_inverted(List* list) {
+    if (list->head == NULL) {
+        printf("Lista Vazia!\n");
+        return;
+    }
+
+    print_list_inverted_pos(list->head);
+}
+
+
 void read_birth(Aluno* aluno) {
     aluno->nascimento = malloc(sizeof(Aluno));
     char input[LINE_LIMIT];
@@ -121,8 +144,6 @@ Aluno* insert(List* alunos) {
             aux = aux->next;
         }
 
-        printf("%s\n", aluno->matricula);
-
         aux->next = aluno;
         alunos->tail = aluno;
     }
@@ -147,6 +168,8 @@ int main () {
     insert(alunos);
 
     print_list(alunos);
+    
+    print_list_inverted(alunos);
 
     return 0;
 }
