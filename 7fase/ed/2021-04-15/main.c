@@ -13,6 +13,7 @@ https://moodle-academico.uffs.edu.br/mod/assign/view.php?id=342435
 #include <string.h>
 
 #define LINE_LIMIT_DATE 12
+#define LIMIT_MATRICULA 25 // TODO set to 10 and fix the code
 
 
 /* structs */
@@ -24,7 +25,7 @@ typedef struct {
 } Date;
 
 struct aluno {
-    char matricula[25]; // TODO set to 10 again
+    char matricula[LIMIT_MATRICULA];
     char nome[40];
     Date* nascimento;
     float media;
@@ -42,7 +43,7 @@ typedef struct {
 /* methods */
 
 char* format_date(Date* date) {
-    printf("DEBUG >> format_date\n");
+    // printf("DEBUG >> format_date\n");
     int size = sizeof(char) * LINE_LIMIT_DATE;
     char* formatted = malloc(size);
 
@@ -51,7 +52,7 @@ char* format_date(Date* date) {
 }
 
 void print_aluno(Aluno* aluno) {
-    printf("DEBUG >> print_aluno\n");
+    // printf("DEBUG >> print_aluno\n");
     printf("%s, %s, %s, %.2f\n",
         aluno->matricula,
         aluno->nome,
@@ -61,7 +62,7 @@ void print_aluno(Aluno* aluno) {
 }
 
 void print_list(List* alunos) {
-    printf("DEBUG >> print_list\n");
+    // printf("DEBUG >> print_list\n");
     if (alunos->head == NULL) {
         printf("Lista Vazia!\n");
         return;
@@ -79,7 +80,7 @@ void print_list(List* alunos) {
 }
 
 void print_list_inverted_pos(Aluno* aluno) {
-    printf("DEBUG >> print_list_inverted_pos\n");
+    // printf("DEBUG >> print_list_inverted_pos\n");
     if (aluno == NULL) {
         return;
     }
@@ -90,7 +91,7 @@ void print_list_inverted_pos(Aluno* aluno) {
 }
 
 void print_list_inverted(List* list) {
-    printf("DEBUG >> print_list_inverted\n");
+    // printf("DEBUG >> print_list_inverted\n");
     if (list->head == NULL) {
         printf("Lista Vazia!\n");
         return;
@@ -101,7 +102,7 @@ void print_list_inverted(List* list) {
 
 
 void read_birth(Aluno* aluno) {
-    printf("DEBUG >> read_birth\n");
+    // printf("DEBUG >> read_birth\n");
 
     aluno->nascimento = malloc(sizeof(Aluno));
     char input[LINE_LIMIT_DATE];
@@ -119,7 +120,7 @@ void read_birth(Aluno* aluno) {
 }
 
 Aluno* insert(List* alunos) {
-    printf("DEBUG >> insert\n");
+    // printf("DEBUG >> insert\n");
 
     Aluno* aluno = malloc(sizeof(Aluno));
 
@@ -154,7 +155,7 @@ Aluno* insert(List* alunos) {
 }
 
 void delete(List* alunos) {
-    printf("DEBUG >> delete\n");
+    // printf("DEBUG >> delete\n");
     if (alunos->head == NULL) {
         printf("Lista Vazia!\n");
         return;
@@ -162,7 +163,7 @@ void delete(List* alunos) {
 
     Aluno* prev = malloc(sizeof(Aluno));
     Aluno* curr = malloc(sizeof(Aluno));
-    char matricula[12];
+    char matricula[LIMIT_MATRICULA];
 
     curr = alunos->head;
     prev = alunos->head;
@@ -170,12 +171,27 @@ void delete(List* alunos) {
     fgets(matricula, sizeof(matricula), stdin);
     matricula[strcspn(matricula, "\n")] = '\0';
     
-    // printf(">> %s == %s ? %d", matricula, curr->matricula, strcmp(matricula, curr->matricula));
 
     while (curr != NULL) {
-        if (matricula == curr->matricula) {
-            // TODO delete
-            printf("found aluno %s\n", curr->nome);
+        if (strcmp(matricula, curr->matricula) == 0) {
+            /* se for o primeiro elemento */
+            if (strcmp(alunos->head->matricula, matricula) == 0) {
+                alunos->head = curr->next;
+                free(curr);
+                return;
+            }
+
+            /* se for o ultimo elemento */
+            if (strcmp(alunos->tail->matricula, matricula) == 0) {
+                prev->next = NULL;
+                alunos->tail = prev;
+                free(curr);
+                return;
+            }
+
+            /* se estiver no meio da lista */
+            prev->next = curr->next;
+            free(curr);
             return;
         }
 
@@ -185,7 +201,7 @@ void delete(List* alunos) {
 }
 
 void menu(List* alunos) {
-    printf("DEBUG >> menu\n");
+    // printf("DEBUG >> menu\n");
     int option = -1;
 
     while (option != 0) {
@@ -238,18 +254,17 @@ int main() {
     alunos->tail = NULL;
 
     menu(alunos);
-    // insert(alunos);
 
     return 0;
 }
 
 
 /** references
+tive problemas com o fgets e fiquei tempo parado nisso:
 https://stackoverflow.com/questions/20150845/c-program-skips-fgets
-
 https://stackoverflow.com/questions/26318275/fgets-skipping-inputs/26318321
+(quando na verdade o tamanho da string matricula era pequeno e causava a maioria dos erros)
 
 ideia de usar recursividade para resolver essa questão (print_list_inverted_pos) baseada na seguinte fonte:
 https://www.geeksforgeeks.org/print-reverse-of-a-linked-list-without-actually-reversing/
-
 */
