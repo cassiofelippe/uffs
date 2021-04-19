@@ -117,6 +117,31 @@ void count(List* alunos) {
     printf("%d\n", i);
 }
 
+void free_and_quit_pos(Aluno* aluno) {
+    // printf("DEBUG >> free_and_quit_pos\n");
+
+    if (aluno == NULL) {
+        return;
+    }
+
+    free_and_quit_pos(aluno->next);
+
+    printf("-");
+
+    free(aluno);
+}
+
+void free_and_quit(List* alunos) {
+    // printf("DEBUG >> free_and_quit\n");
+    if (alunos->head == NULL) {
+        return;
+    }
+
+    free_and_quit_pos(alunos->head);
+
+    printf("\n");
+}
+
 void read_birth(Aluno* aluno) {
     // printf("DEBUG >> read_birth\n");
 
@@ -218,6 +243,7 @@ void menu(List* alunos) {
     int option = -1;
 
     while (option != 0) {
+        /*
         printf("\n\
 - Opção 1: Incluir elemento na lista\n\
 - Opção 2: Excluir elemento da lista\n\
@@ -226,6 +252,7 @@ void menu(List* alunos) {
 - Opção 5: Apresentar quantos elementos existem na lista\n\
 - Opção 0: Sair do programa\n"
         );
+        */
 
         scanf("%d%*[^\n]", &option);
         getchar();
@@ -254,6 +281,11 @@ void menu(List* alunos) {
             case 5: {
                 count(alunos);
                 break;
+            }
+
+            case 0: {
+                free_and_quit(alunos);
+                return;
             }
 
             default: {
