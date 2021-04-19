@@ -68,8 +68,7 @@ void print_list(List* alunos) {
         return;
     }
 
-    Aluno* aux = malloc(sizeof(Aluno));
-    aux = alunos->head;
+    Aluno* aux = alunos->head;
 
     print_aluno(aux);
 
@@ -100,6 +99,23 @@ void print_list_inverted(List* list) {
     print_list_inverted_pos(list->head);
 }
 
+void count(List* alunos) {
+    // printf("DEBUG >> count\n");
+    if (alunos->head == NULL) {
+        printf("Lista Vazia!\n");
+        return;
+    }
+
+    Aluno* aux = alunos->head;
+    int i = 0;
+
+    while (aux != NULL) {
+        aux = aux->next;
+        i++;
+    }
+
+    printf("%d\n", i);
+}
 
 void read_birth(Aluno* aluno) {
     // printf("DEBUG >> read_birth\n");
@@ -161,12 +177,9 @@ void delete(List* alunos) {
         return;
     }
 
-    Aluno* prev = malloc(sizeof(Aluno));
-    Aluno* curr = malloc(sizeof(Aluno));
+    Aluno* prev = alunos->head;
+    Aluno* curr = alunos->head;
     char matricula[LIMIT_MATRICULA];
-
-    curr = alunos->head;
-    prev = alunos->head;
 
     fgets(matricula, sizeof(matricula), stdin);
     matricula[strcspn(matricula, "\n")] = '\0';
@@ -235,6 +248,11 @@ void menu(List* alunos) {
 
             case 4: {
                 print_list_inverted(alunos);
+                break;
+            }
+
+            case 5: {
+                count(alunos);
                 break;
             }
 
