@@ -24,7 +24,7 @@ typedef struct {
 } Date;
 
 struct aluno {
-    char matricula[10];
+    char matricula[25]; // TODO set to 10 again
     char nome[40];
     Date* nascimento;
     float media;
@@ -42,17 +42,16 @@ typedef struct {
 /* methods */
 
 char* format_date(Date* date) {
-    // printf("DEBUG >> format_date\n");
+    printf("DEBUG >> format_date\n");
     int size = sizeof(char) * LINE_LIMIT_DATE;
     char* formatted = malloc(size);
 
     snprintf(formatted, size, "%d/%d/%d", date->dia, date->mes, date->ano);
-    // printf("%d/%d/%d\n", date->dia, date->mes, date->ano);
     return formatted;
 }
 
 void print_aluno(Aluno* aluno) {
-    // printf("DEBUG >> print_aluno\n");
+    printf("DEBUG >> print_aluno\n");
     printf("%s, %s, %s, %.2f\n",
         aluno->matricula,
         aluno->nome,
@@ -62,7 +61,7 @@ void print_aluno(Aluno* aluno) {
 }
 
 void print_list(List* alunos) {
-    // printf("DEBUG >> print_list\n");
+    printf("DEBUG >> print_list\n");
     if (alunos->head == NULL) {
         printf("Lista Vazia!\n");
         return;
@@ -80,7 +79,7 @@ void print_list(List* alunos) {
 }
 
 void print_list_inverted_pos(Aluno* aluno) {
-    // printf("DEBUG >> print_list_inverted_pos\n");
+    printf("DEBUG >> print_list_inverted_pos\n");
     if (aluno == NULL) {
         return;
     }
@@ -91,7 +90,7 @@ void print_list_inverted_pos(Aluno* aluno) {
 }
 
 void print_list_inverted(List* list) {
-    // printf("DEBUG >> print_list_inverted\n");
+    printf("DEBUG >> print_list_inverted\n");
     if (list->head == NULL) {
         printf("Lista Vazia!\n");
         return;
@@ -102,7 +101,7 @@ void print_list_inverted(List* list) {
 
 
 void read_birth(Aluno* aluno) {
-    // printf("DEBUG >> read_birth\n");
+    printf("DEBUG >> read_birth\n");
 
     aluno->nascimento = malloc(sizeof(Aluno));
     char input[LINE_LIMIT_DATE];
@@ -120,21 +119,16 @@ void read_birth(Aluno* aluno) {
 }
 
 Aluno* insert(List* alunos) {
-    // printf("DEBUG >> insert\n");
-    int c;
+    printf("DEBUG >> insert\n");
 
     Aluno* aluno = malloc(sizeof(Aluno));
 
     fgets(aluno->matricula, sizeof(aluno->matricula), stdin);
     aluno->matricula[strcspn(aluno->matricula, "\n")] = '\0';
 
-    // while ( (c = getchar()) != '\n' && c != EOF );
-
     fgets(aluno->nome, sizeof(aluno->nome), stdin);
     aluno->nome[strcspn(aluno->nome, "\n")] = '\0';
     
-    // while ( (c = getchar()) != '\n' && c != EOF );
-
     read_birth(aluno);
 
     scanf("%f%*[^\n]", &aluno->media);
@@ -160,7 +154,7 @@ Aluno* insert(List* alunos) {
 }
 
 void delete(List* alunos) {
-    // printf("DEBUG >> delete\n");
+    printf("DEBUG >> delete\n");
     if (alunos->head == NULL) {
         printf("Lista Vazia!\n");
         return;
@@ -191,7 +185,7 @@ void delete(List* alunos) {
 }
 
 void menu(List* alunos) {
-    // printf("DEBUG >> menu\n");
+    printf("DEBUG >> menu\n");
     int option = -1;
 
     while (option != 0) {
