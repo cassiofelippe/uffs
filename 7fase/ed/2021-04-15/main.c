@@ -6,6 +6,8 @@ uma data de nascimento (struct Data vista em aula),
 média geral de notas (float).
 Sua implementação deve suportar os seguintes requisitos...
 https://moodle-academico.uffs.edu.br/mod/assign/view.php?id=342435
+
+1621101010 - CASSIO LUIS ZAMIGNAN FORTE FELIPPE - 19/04/2021
 */
 
 #include <stdio.h>
@@ -13,7 +15,12 @@ https://moodle-academico.uffs.edu.br/mod/assign/view.php?id=342435
 #include <string.h>
 
 #define LINE_LIMIT_DATE 12
-#define LIMIT_MATRICULA 25 // TODO set to 10 and fix the code
+#define LIMIT_MATRICULA 20
+/*
+usando tamanho do vetor de matricula como 20
+pois 10 causava erros, e apesar de 11 solucionar
+quis garantir caso haja um input maior
+*/
 
 
 /* structs */
@@ -206,7 +213,7 @@ void delete(List* alunos) {
         printf("Lista Vazia!\n");
         return;
     }
-    
+
     Aluno* prev = alunos->head;
     Aluno* curr = alunos->head;
 
