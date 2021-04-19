@@ -12,7 +12,8 @@ https://moodle-academico.uffs.edu.br/mod/assign/view.php?id=342435
 #include <stdlib.h>
 #include <string.h>
 
-#define LINE_LIMIT 12
+#define LINE_LIMIT_DATE 12
+
 
 /* structs */
 
@@ -40,19 +41,18 @@ typedef struct {
 
 /* methods */
 
-void menu() {
-
-}
-
 char* format_date(Date* date) {
-    char* formatted = malloc(sizeof(char) * LINE_LIMIT);
+    // printf("DEBUG >> format_date\n");
+    int size = sizeof(char) * LINE_LIMIT_DATE;
+    char* formatted = malloc(size);
 
-    snprintf(formatted, sizeof(char) * LINE_LIMIT, "%d/%d/%d", date->dia, date->mes, date->ano);
+    snprintf(formatted, size, "%d/%d/%d", date->dia, date->mes, date->ano);
     // printf("%d/%d/%d\n", date->dia, date->mes, date->ano);
     return formatted;
 }
 
 void print_aluno(Aluno* aluno) {
+    // printf("DEBUG >> print_aluno\n");
     printf("%s, %s, %s, %.2f\n",
         aluno->matricula,
         aluno->nome,
@@ -62,6 +62,7 @@ void print_aluno(Aluno* aluno) {
 }
 
 void print_list(List* alunos) {
+    // printf("DEBUG >> print_list\n");
     if (alunos->head == NULL) {
         printf("Lista Vazia!\n");
         return;
@@ -78,10 +79,8 @@ void print_list(List* alunos) {
     }
 }
 
-/* ideia de usar recursividade para resolver essa questão baseada na seguinte fonte:
-https://www.geeksforgeeks.org/print-reverse-of-a-linked-list-without-actually-reversing/
-*/
 void print_list_inverted_pos(Aluno* aluno) {
+    // printf("DEBUG >> print_list_inverted_pos\n");
     if (aluno == NULL) {
         return;
     }
@@ -92,6 +91,7 @@ void print_list_inverted_pos(Aluno* aluno) {
 }
 
 void print_list_inverted(List* list) {
+    // printf("DEBUG >> print_list_inverted\n");
     if (list->head == NULL) {
         printf("Lista Vazia!\n");
         return;
@@ -102,9 +102,11 @@ void print_list_inverted(List* list) {
 
 
 void read_birth(Aluno* aluno) {
+    // printf("DEBUG >> read_birth\n");
+
     aluno->nascimento = malloc(sizeof(Aluno));
-    char input[LINE_LIMIT];
-    char* token = malloc(sizeof(char) * LINE_LIMIT), key[2] = "/";
+    char input[LINE_LIMIT_DATE];
+    char* token = malloc(sizeof(char) * LINE_LIMIT_DATE), key[2] = "/";
 
     fgets(input, sizeof(input), stdin);
     input[strcspn(input, "\n")] = '\0';
@@ -118,19 +120,25 @@ void read_birth(Aluno* aluno) {
 }
 
 Aluno* insert(List* alunos) {
+    // printf("DEBUG >> insert\n");
+    int c;
+
     Aluno* aluno = malloc(sizeof(Aluno));
 
     fgets(aluno->matricula, sizeof(aluno->matricula), stdin);
     aluno->matricula[strcspn(aluno->matricula, "\n")] = '\0';
 
-    getchar();
-    
+    // while ( (c = getchar()) != '\n' && c != EOF );
+
     fgets(aluno->nome, sizeof(aluno->nome), stdin);
     aluno->nome[strcspn(aluno->nome, "\n")] = '\0';
+    
+    // while ( (c = getchar()) != '\n' && c != EOF );
 
     read_birth(aluno);
 
-    scanf("%f", &aluno->media);
+    scanf("%f%*[^\n]", &aluno->media);
+    getchar();
     
     aluno->next = NULL;
 
@@ -151,25 +159,103 @@ Aluno* insert(List* alunos) {
     return aluno;
 }
 
+void delete(List* alunos) {
+    // printf("DEBUG >> delete\n");
+    if (alunos->head == NULL) {
+        printf("Lista Vazia!\n");
+        return;
+    }
 
-int main () {
-    int n;
+    Aluno* prev = malloc(sizeof(Aluno));
+    Aluno* curr = malloc(sizeof(Aluno));
+    char matricula[12];
+
+    curr = alunos->head;
+    prev = alunos->head;
+
+    fgets(matricula, sizeof(matricula), stdin);
+    matricula[strcspn(matricula, "\n")] = '\0';
+    
+    // printf(">> %s == %s ? %d", matricula, curr->matricula, strcmp(matricula, curr->matricula));
+
+    while (curr != NULL) {
+        if (matricula == curr->matricula) {
+            // TODO delete
+            printf("found aluno %s\n", curr->nome);
+            return;
+        }
+
+        prev = curr;
+        curr = curr->next;
+    }
+}
+
+void menu(List* alunos) {
+    // printf("DEBUG >> menu\n");
+    int option = -1;
+
+    while (option != 0) {
+        printf("\n\
+- Opção 1: Incluir elemento na lista\n\
+- Opção 2: Excluir elemento da lista\n\
+- Opção 3: Listar todos os elementos da lista na ordem de inclusão\n\
+- Opção 4: Listar todos os elementos da lista na ordem inversa a inclusão\n\
+- Opção 5: Apresentar quantos elementos existem na lista\n\
+- Opção 0: Sair do programa\n"
+        );
+
+        scanf("%d%*[^\n]", &option);
+        getchar();
+
+        switch(option) {
+            case 1: {
+                insert(alunos);
+                break;
+            }
+
+            case 2: {
+                delete(alunos);
+                break;
+            }
+
+            case 3: {
+                print_list(alunos);
+                break;
+            }
+
+            case 4: {
+                print_list_inverted(alunos);
+                break;
+            }
+
+            default: {
+                printf("bruh\n");
+                return;
+            }
+        }
+    }
+}
+
+
+int main() {
     List* alunos = malloc(sizeof(List));
 
     alunos->head = NULL;
     alunos->tail = NULL;
 
-    scanf("%d\n", &n);
-
-    insert(alunos);
-    
-    scanf("%d\n", &n);
-    
-    insert(alunos);
-
-    print_list(alunos);
-    
-    print_list_inverted(alunos);
+    menu(alunos);
+    // insert(alunos);
 
     return 0;
 }
+
+
+/** references
+https://stackoverflow.com/questions/20150845/c-program-skips-fgets
+
+https://stackoverflow.com/questions/26318275/fgets-skipping-inputs/26318321
+
+ideia de usar recursividade para resolver essa questão (print_list_inverted_pos) baseada na seguinte fonte:
+https://www.geeksforgeeks.org/print-reverse-of-a-linked-list-without-actually-reversing/
+
+*/
