@@ -196,19 +196,19 @@ Aluno* insert(List* alunos) {
 }
 
 void delete(List* alunos) {
+    char matricula[LIMIT_MATRICULA];
+
+    fgets(matricula, sizeof(matricula), stdin);
+    matricula[strcspn(matricula, "\n")] = '\0';
+
     // printf("DEBUG >> delete\n");
     if (alunos->head == NULL) {
         printf("Lista Vazia!\n");
         return;
     }
-
+    
     Aluno* prev = alunos->head;
     Aluno* curr = alunos->head;
-    char matricula[LIMIT_MATRICULA];
-
-    fgets(matricula, sizeof(matricula), stdin);
-    matricula[strcspn(matricula, "\n")] = '\0';
-    
 
     while (curr != NULL) {
         if (strcmp(matricula, curr->matricula) == 0) {
