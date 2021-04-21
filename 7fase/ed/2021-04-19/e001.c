@@ -29,6 +29,7 @@ void split_print_free(char* word) {
 
     for (i = 0; i < strlen(word); i++) {
         Item* aux = malloc(sizeof(Item));
+        aux->prev = NULL;
         aux->next = NULL;
         aux->value = word[i];
 
@@ -46,6 +47,7 @@ void split_print_free(char* word) {
             }
 
             aux2->next = aux;
+            aux->prev = aux2;
         }
     }
 
@@ -62,6 +64,19 @@ void split_print_free(char* word) {
 
     /* free */
 
+    /* stack implementation */
+    // aux = queue->last;
+    // while (aux != NULL) {
+    //     Item* prev = aux->prev;
+    //     printf("freeing %c\n", aux->value);
+    //     free(aux);
+    //     if (prev != NULL) {
+    //         prev->next = NULL;
+    //     }
+    //     aux = prev;
+    // }
+
+    /* queue implementation */
     aux = queue->first;
 
     while (aux != NULL) {
@@ -74,7 +89,6 @@ void split_print_free(char* word) {
         }
         aux = next;
     }
-
 }
 
 
