@@ -207,9 +207,17 @@ Aluno* insert(List* alunos) {
 
                 if (next != NULL) {
                     next->prev = aluno;
+                } else {
+                    /* when it's the last element */
+                    alunos->tail = aluno;
                 }
 
                 found_record = 1;
+            }
+
+            /* when it's the last element */
+            if (aux->next == NULL) {
+                alunos->tail = aux;
             }
 
             aux = aux->next;
@@ -243,34 +251,40 @@ void delete(List* alunos) {
         return;
     }
 
-    Aluno* prev = alunos->head;
-    Aluno* curr = alunos->head;
+    Aluno* aux = alunos->head;
 
-    while (curr != NULL) {
-        if (strcmp(matricula, curr->matricula) == 0) {
+    while (aux != NULL) {
+        if (strcmp(matricula, aux->matricula) == 0) {
             /* se for o primeiro elemento */
             if (strcmp(alunos->head->matricula, matricula) == 0) {
-                alunos->head = curr->next;
-                free(curr);
+                alunos->head = aux->next;
+                
+                if (aux->next != NULL) {
+                    aux->next->prev = NULL;
+                }
+
+                free(aux);
                 return;
             }
 
             /* se for o ultimo elemento */
             if (strcmp(alunos->tail->matricula, matricula) == 0) {
-                prev->next = NULL;
-                alunos->tail = prev;
-                free(curr);
+                aux = alunos->tail;
+                aux->prev->next = NULL;
+                alunos->tail = aux->prev;
+
+                free(aux);
                 return;
             }
 
             /* se estiver no meio da lista */
-            prev->next = curr->next;
-            free(curr);
+            aux->prev->next = aux->next;
+            aux->next->prev = aux->prev;
+            free(aux);
             return;
         }
 
-        prev = curr;
-        curr = curr->next;
+        aux = aux->next;
     }
 }
 
