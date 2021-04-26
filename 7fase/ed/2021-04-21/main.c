@@ -134,7 +134,7 @@ void free_and_quit_pos(Aluno* aluno) {
 
     free_and_quit_pos(aluno->next);
 
-    printf("-");
+    printf("*");
 
     free(aluno);
 }
@@ -207,9 +207,6 @@ Aluno* insert(List* alunos) {
 
                 if (next != NULL) {
                     next->prev = aluno;
-                } else {
-                    /* when it's the last element */
-                    alunos->tail = aluno;
                 }
 
                 found_record = 1;
@@ -223,16 +220,16 @@ Aluno* insert(List* alunos) {
             aux = aux->next;
         }
 
-        aux = alunos->head;
-
+        /* if hasn't found, inserts at the beginning */
         if (!found_record) {
-            alunos->head = aluno;
+            aux = alunos->head;
 
-            if (aux->next != NULL) {
-                aux->next->prev = aluno;
+            if (aux != NULL) {
+                aux->prev = aluno;
             }
 
             aluno->next = aux;
+            alunos->head = aluno;
         }
     }
 
@@ -240,21 +237,17 @@ Aluno* insert(List* alunos) {
 }
 
 void delete(List* alunos) {
+    // printf("DEBUG >> delete\n");
     char matricula[LIMIT_MATRICULA];
 
     fgets(matricula, sizeof(matricula), stdin);
     matricula[strcspn(matricula, "\n")] = '\0';
 
-    // printf("DEBUG >> delete\n");
-    if (alunos->head == NULL) {
-        printf("Lista Vazia!\n");
-        return;
-    }
-
     Aluno* aux = alunos->head;
 
     while (aux != NULL) {
         if (strcmp(matricula, aux->matricula) == 0) {
+
             /* se for o primeiro elemento */
             if (strcmp(alunos->head->matricula, matricula) == 0) {
                 alunos->head = aux->next;
@@ -285,6 +278,11 @@ void delete(List* alunos) {
         }
 
         aux = aux->next;
+    }
+
+    if (alunos->head == NULL) {
+        printf("Lista Vazia!\n");
+        return;
     }
 }
 
@@ -325,11 +323,6 @@ void menu(List* alunos) {
 
             case 4: {
                 print_list_inverted(alunos);
-                break;
-            }
-
-            case 5: {
-                count(alunos);
                 break;
             }
 
