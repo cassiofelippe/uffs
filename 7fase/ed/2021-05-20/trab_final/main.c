@@ -146,8 +146,6 @@ void insContactAfter(CBook* book) {
         aux = aux->next;
     }
 
-    printf("\n%s found? %d\n", email, found);
-
     if (found) {
         /* caso tenha encontrado registro para email inserido */
         newContact->prev = aux;
@@ -180,6 +178,15 @@ void delContact(char *email) {
     return;
 }
 
+void printContact(Contact* contact) {
+    printf("%s, %s, %s, %s\n",
+        contact->name,
+        formatDate(contact->birth),
+        contact->email,
+        contact->phone
+    );
+}
+
 // Lista o conteúdo da agenda (todos os campos)
 void listContacts(CBook* book) {
     // printf("DEBUG >> listContacts\n");
@@ -191,20 +198,28 @@ void listContacts(CBook* book) {
     Contact* aux = book->head;
 
     while (aux != NULL) {
-        printf("%s, %s, %s, %s\n",
-            aux->name,
-            formatDate(aux->birth),
-            aux->email,
-            aux->phone
-        );
+        printContact(aux);
 
         aux = aux->next;
     }
 }
 
 // Permite consultar um contato da agenda por nome
-void queryContact(char *name) {
-    return;
+void queryContact(CBook* book) {
+    Contact* aux = book->head;
+    char name[30];
+    
+    printf("Insert the name: ");
+    scanf("%s%*[^\n]", name);
+    getchar();
+
+    while (aux != NULL) {
+        if (strcmp(aux->name, name) == 0) {
+            printContact(aux);
+        }
+
+        aux = aux->next;
+    }
 }
 
 // Permite a atualização dos dados de um contato da agenda
@@ -239,41 +254,30 @@ int menu(CBook* book) {
         scanf("%d%*[^\n]", &op);
         getchar();
 
+        printf("\n");
         switch(op) {
             case 1: {
-                printf("\n");
                 insContact(book);
-                printf("\n");
                 break;
             }
             case 2: {
-                printf("\n");
                 insContactAfter(book);
-                printf("\n");
                 break;
             }
             case 3: {
-                printf("\n");
                 delContact(book->head->email);
-                printf("\n");
                 break;
             }
             case 4: {
-                printf("\n");
                 upContact();
-                printf("\n");
                 break;
             }
             case 5: {
-                printf("\n");
-                queryContact(book->head->email);
-                printf("\n");
+                queryContact(book);
                 break;
             }
             case 6: {
-                printf("\n");
                 listContacts(book);
-                printf("\n");
                 break;
             }
             case 10: {
@@ -284,6 +288,7 @@ int menu(CBook* book) {
                 break;
             }
         }
+        printf("\n");
     }
 
     return op;
