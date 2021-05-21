@@ -175,8 +175,6 @@ void insContactAfter(CBook* book) {
     Contact* aux = searchByEmail(book, email);
     boolean found = aux != NULL;
 
-    printf("found: %d, name: %s\n", found, aux->name);
-
     if (found) {
         /* caso tenha encontrado registro para email inserido */
         newContact->prev = aux;
@@ -206,44 +204,44 @@ void insContactAfter(CBook* book) {
 
 // Permite excluir um contato da agenda baseado no email
 void delContact(CBook* book) {
-    Contact* aux = book->head;
     char email[40];
     
     printf("Insert the email: ");
     scanf("%s%*[^\n]", email);
     getchar();
 
-    while (aux != NULL) {
-        if (strcmp(aux->email, email) == 0) {
-            /* caso seja o primeiro */
-            if (book->head == aux) {
-                /* caso seja o primeiro e último */
-                if (book->tail == aux) {
-                    book->head = NULL;
-                    book->tail = NULL;
-                } else {
-                    book->head = aux->next;
-                }
-        
-                free(aux);
-                break;
-            /* caso seja o último */
-            } else if (book->tail == aux) {
-                aux->prev->next = NULL;
-                book->tail = aux->prev;
-                free(aux);
-                break;
-            }
+    Contact* aux = searchByEmail(book, email);
 
-            aux->prev->next = aux->next;
-            aux->next->prev = aux->prev;
-            free(aux);
-            break;
-        }
-
-        aux = aux->next;
+    if (aux == NULL) {
+        printf("Contact not found! Returning to menu...\n");
+        return;
     }
-    
+
+    printf("Deleting contact:\n");
+    printContact(aux);
+
+    /* caso seja o primeiro */
+    if (book->head == aux) {
+        /* caso seja o primeiro e último */
+        if (book->tail == aux) {
+            book->head = NULL;
+            book->tail = NULL;
+        } else {
+            book->head = aux->next;
+        }
+    /* caso seja o último */
+    } else if (book->tail == aux) {
+        aux->prev->next = NULL;
+        book->tail = aux->prev;
+    /* caso esteja no meio */
+    } else {
+        aux->prev->next = aux->next;
+        aux->next->prev = aux->prev;
+    }
+
+    free(aux);
+
+    printf("Contact deleted successfully!\n");
 }
 
 void printContact(Contact* contact) {
@@ -290,31 +288,47 @@ void queryContact(CBook* book) {
     }
 }
 
+boolean willUpdateAttr(char* attr) {
+    printf("Update %s? [0 - NO | 1 - YES]\n", attr);
+
+    boolean update = false;
+
+    scanf("%d", &update);
+
+    return update;
+}
+
 // Permite a atualização dos dados de um contato da agenda
 void upContact(CBook* book) {
-    Contact* aux = book->head;
     char email[40];
     
     printf("Insert the email: ");
     scanf("%s%*[^\n]", email);
     getchar();
 
-    while (aux != NULL) {
-        if (strcmp(aux->email, email) == 0) {
-            // fgets(newContact->name, sizeof(newContact->name), stdin);
-            // newContact->name[strcspn(newContact->name, "\n")] = '\0';
-            scanf("%s", aux->name);
+    Contact* aux = searchByEmail(book, email);
 
-            insDate(aux);
-
-            // fgets(newContact->phone, sizeof(newContact->phone), stdin);
-            // newContact->phone[strcspn(newContact->phone, "\n")] = '\0';
-            scanf("%s", aux->phone);
-            break;
-        }
-
-        aux = aux->next;
+    if (aux == NULL) {
+        printf("Contact not found! Returning to menu...\n");
+        return;
     }
+
+    if (willUpdateAttr("name")) {
+        scanf("%s", aux->name);
+    }
+
+    if (willUpdateAttr("birth")) {
+        insDate(aux);
+    }
+
+    // fgets(newContact->phone, sizeof(newContact->phone), stdin);
+    // newContact->phone[strcspn(newContact->phone, "\n")] = '\0';
+    
+    if (willUpdateAttr("phone")) {
+        scanf("%s", aux->phone);
+    }
+
+    printf("Contact updated successfully!");
 }
 
 void freeMem() {
@@ -402,6 +416,5 @@ int main() {
 TODOs:
 - trocar scanf para fgets em strings (com exceção da data que tá ok)
 - testar ./main < input
-- criar validação para email já existente
 - testar todas as possibilidades para todo e cada método
 */
