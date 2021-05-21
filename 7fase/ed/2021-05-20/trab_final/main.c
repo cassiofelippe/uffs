@@ -174,8 +174,45 @@ void insContactAfter(CBook* book) {
 }
 
 // Permite excluir um contato da agenda baseado no email
-void delContact(char *email) {
-    return;
+void delContact(CBook* book) {
+    Contact* aux = book->head;
+    char email[40];
+    
+    printf("Insert the email: ");
+    scanf("%s%*[^\n]", email);
+    getchar();
+
+    while (aux != NULL) {
+        if (strcmp(aux->email, email) == 0) {
+            /* caso seja o primeiro */
+            if (book->head == aux) {
+                /* caso seja o primeiro e último */
+                if (book->tail == aux) {
+                    book->head = NULL;
+                    book->tail = NULL;
+                } else {
+                    book->head = aux->next;
+                }
+        
+                free(aux);
+                break;
+            /* caso seja o último */
+            } else if (book->tail == aux) {
+                aux->prev->next = NULL;
+                book->tail = aux->prev;
+                free(aux);
+                break;
+            }
+
+            aux->prev->next = aux->next;
+            aux->next->prev = aux->prev;
+            free(aux);
+            break;
+        }
+
+        aux = aux->next;
+    }
+    
 }
 
 void printContact(Contact* contact) {
@@ -287,7 +324,7 @@ int menu(CBook* book) {
                 break;
             }
             case 3: {
-                delContact(book->head->email);
+                delContact(book);
                 break;
             }
             case 4: {
