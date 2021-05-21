@@ -365,3 +365,12 @@ int main() {
     
     return 0;
 }
+
+
+/*
+TODOs:
+- trocar scanf para fgets em strings (com exceção da data que tá ok)
+- testar ./main < input
+- criar validação para email já existente
+- testar todas as possibilidades para todo e cada método
+*/
