@@ -14,7 +14,11 @@ https://moodle-academico.uffs.edu.br/mod/assign/view.php?id=357812
 
 #define EXIT 10  // valor fixo para a opção que finaliza a aplicação
 #define LINE_LIMIT_DATE 12
+#define false 0
+#define true 1
 
+
+/* STRUCTS AND DATA TYPES */
 
 //Struct que representa a data.
 typedef struct {
@@ -41,23 +45,10 @@ typedef struct {
     Contact* tail;
 } CBook;
 
+typedef int boolean;
+
 
 /* METHODS */
-
-// Apresenta o menu da aplicação e retorna a opção selecionada
-int menu() {
-    int op = EXIT+1;
-
-    scanf("%d", &op);
-    
-    // while (op != EXIT) {
-    //     printf("%d Finaliza", EXIT);
-    //     printf("\n: ");
-    //     scanf("%d", &op);
-    // }
-
-    return op;
-}
 
 void insDate(Contact* contact) {
     contact->birth = malloc(sizeof(Contact));
@@ -73,52 +64,6 @@ void insDate(Contact* contact) {
     contact->birth->month = atoi(token);
     token = strtok(NULL, key);
     contact->birth->year = atoi(token);
-}
-
-// Permite o cadastro de um contato
-void insContact(CBook* book) {
-    printf("DEBUG >> insContact\n");
-
-    Contact *newContact = malloc(sizeof(Contact));
-    newContact->next = NULL;
-    newContact->prev = NULL;
-
-    // fgets(newContact->name, sizeof(newContact->name), stdin);
-    // newContact->name[strcspn(newContact->name, "\n")] = '\0';
-    scanf("%s", newContact->name);
-
-    insDate(newContact);
-
-    // fgets(newContact->email, sizeof(newContact->email), stdin);
-    // newContact->email[strcspn(newContact->email, "\n")] = '\0';
-    scanf("%s", newContact->email);
-
-    // fgets(newContact->phone, sizeof(newContact->phone), stdin);
-    // newContact->phone[strcspn(newContact->phone, "\n")] = '\0';
-    scanf("%s", newContact->phone);
-
-
-    if (book->tail == NULL) {
-        book->head = newContact;
-        book->tail = newContact;
-    } else {
-        newContact->prev = book->tail;
-        book->tail = newContact;
-        newContact->prev->next = newContact;
-    }
-
-    return;
-}
-
-// Permite o cadastro de um contato
-// deve ser passado pelo menos o email
-void insContactAfter(CBook* book) {
-    return;
-}
-
-// Permite excluir um contato da agenda baseado no email
-void delContact(char *email) {
-    return;
 }
 
 char* formatDate(Date* date) {
@@ -138,9 +83,106 @@ char* formatDate(Date* date) {
     return formatted;
 }
 
+Contact* readContact() {
+    Contact* newContact = malloc(sizeof(Contact));
+    newContact->next = NULL;
+    newContact->prev = NULL;
+
+    // fgets(newContact->name, sizeof(newContact->name), stdin);
+    // newContact->name[strcspn(newContact->name, "\n")] = '\0';
+    scanf("%s", newContact->name);
+
+    insDate(newContact);
+
+    // fgets(newContact->email, sizeof(newContact->email), stdin);
+    // newContact->email[strcspn(newContact->email, "\n")] = '\0';
+    scanf("%s", newContact->email); // TODO o email inserido não pode existir na agenda
+
+    // fgets(newContact->phone, sizeof(newContact->phone), stdin);
+    // newContact->phone[strcspn(newContact->phone, "\n")] = '\0';
+    scanf("%s", newContact->phone);
+
+    return newContact;
+}
+
+// Permite o cadastro de um contato
+void insContact(CBook* book) {
+    // printf("DEBUG >> insContact\n");
+
+    Contact *newContact = readContact();
+
+    if (book->tail == NULL) {
+        book->head = newContact;
+        book->tail = newContact;
+    } else {
+        newContact->prev = book->tail;
+        book->tail = newContact;
+        newContact->prev->next = newContact;
+    }
+
+    return;
+}
+
+// Permite o cadastro de um contato
+// deve ser passado pelo menos o email
+void insContactAfter(CBook* book) {
+    char email[40];
+    
+    printf("Insert the email: ");
+    scanf("%s%*[^\n]", email);
+    getchar();
+
+    boolean found = false;
+
+    Contact* aux = book->head;
+    Contact* newContact = readContact();
+
+    while (!found && aux != NULL) {
+        if (strcmp(aux->email, email) == 0) {
+            found = true;
+            break;
+        }
+
+        aux = aux->next;
+    }
+
+    printf("\n%s found? %d\n", email, found);
+
+    if (found) {
+        /* caso tenha encontrado registro para email inserido */
+        newContact->prev = aux;
+        newContact->next = aux->next;
+        aux->next = newContact;
+
+        /* caso o registro encontrado seja o último da lista */
+        if (newContact->next != NULL) {
+            newContact->next->prev = newContact;
+        }
+    } else {
+        /* caso não tenha encontrado */
+        aux = book->head;
+
+        if (aux == NULL) {
+            /* se a lista estiver vazia */
+            book->head = newContact;
+            book->tail = newContact;
+        } else {
+            /* insere no começo da lista */
+            newContact->next = aux;
+            aux->prev = newContact;
+            book->head = newContact;
+        }
+    }
+}
+
+// Permite excluir um contato da agenda baseado no email
+void delContact(char *email) {
+    return;
+}
+
 // Lista o conteúdo da agenda (todos os campos)
 void listContacts(CBook* book) {
-    printf("DEBUG >> listContacts\n");
+    // printf("DEBUG >> listContacts\n");
 
     if (book->head == NULL) {
         return;
@@ -150,7 +192,6 @@ void listContacts(CBook* book) {
 
     while (aux != NULL) {
         printf("%s, %s, %s, %s\n",
-        // printf("%s, %s, %s\n",
             aux->name,
             formatDate(aux->birth),
             aux->email,
@@ -159,8 +200,6 @@ void listContacts(CBook* book) {
 
         aux = aux->next;
     }
-
-    return;
 }
 
 // Permite consultar um contato da agenda por nome
@@ -177,43 +216,86 @@ void freeMem() {
     return;
 }
 
-// Programa principal
-int main() {
-    int op = EXIT+1;
-    
-    CBook* book = malloc(sizeof(CBook));
-    book->head = NULL;
-    book->tail = NULL;
+// Apresenta o menu da aplicação e retorna a opção selecionada
+int menu(CBook* book) {
+    int op;
 
     while (op != EXIT) {
-        op = menu();
+        printf("\
+************************************\n\
+*              MENU                *\n\
+************************************\n\
+* [1] Insert contact at the end    *\n\
+* [2] Insert contact after another *\n\
+* [3] Delete contact               *\n\
+* [4] Update contact               *\n\
+* [5] Find contact by name         *\n\
+* [6] List all contacts            *\n\
+************************************\n"
+        );
+
+        printf("Please insert the desired option: ");
+        
+        scanf("%d%*[^\n]", &op);
+        getchar();
+
         switch(op) {
             case 1: {
+                printf("\n");
                 insContact(book);
+                printf("\n");
                 break;
             }
             case 2: {
+                printf("\n");
                 insContactAfter(book);
+                printf("\n");
                 break;
             }
             case 3: {
+                printf("\n");
                 delContact(book->head->email);
+                printf("\n");
                 break;
             }
             case 4: {
+                printf("\n");
                 upContact();
+                printf("\n");
                 break;
             }
             case 5: {
+                printf("\n");
                 queryContact(book->head->email);
+                printf("\n");
                 break;
             }
             case 6: {
+                printf("\n");
                 listContacts(book);
+                printf("\n");
+                break;
+            }
+            case 10: {
+                return 0;
+            }
+            default: {
+                printf("Invalid option!\n");
                 break;
             }
         }
     }
+
+    return op;
+}
+
+// Programa principal
+int main() {
+    CBook* book = malloc(sizeof(CBook));
+    book->head = NULL;
+    book->tail = NULL;
+
+    menu(book);
 
     freeMem(); // liberar toda a memória alocada
     
