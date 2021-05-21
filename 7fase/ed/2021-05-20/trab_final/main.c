@@ -84,12 +84,12 @@ char* formatDate(Date* date) {
 }
 
 /* procura na agenca se já existe registro com o email */
-Contact* searchByEmail(CBook* book, Contact* toBeInserted) {
+Contact* searchByEmail(CBook* book, char* email) {
     Contact* aux = book->head;    
     boolean found = false;
 
     while (!found && aux != NULL) {
-        if (strcmp(aux->email, toBeInserted->email) == 0) {
+        if (strcmp(aux->email, email) == 0) {
             found = true;
             break;
         }
@@ -105,7 +105,7 @@ Contact* searchByEmail(CBook* book, Contact* toBeInserted) {
 }
 
 boolean emailAlreadyExist(CBook* book, Contact* newContact) {
-    if (searchByEmail(book, newContact) != NULL) {
+    if (searchByEmail(book, newContact->email) != NULL) {
         printf("Email already exists! Returning to menu...\n");
         free(newContact);
         return true;
@@ -172,8 +172,10 @@ void insContactAfter(CBook* book) {
         return;
     }
 
-    Contact* aux = searchByEmail(book, newContact);
+    Contact* aux = searchByEmail(book, email);
     boolean found = aux != NULL;
+
+    printf("found: %d, name: %s\n", found, aux->name);
 
     if (found) {
         /* caso tenha encontrado registro para email inserido */
