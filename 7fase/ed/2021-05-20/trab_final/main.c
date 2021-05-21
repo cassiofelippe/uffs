@@ -83,6 +83,38 @@ char* formatDate(Date* date) {
     return formatted;
 }
 
+/* procura na agenca se já existe registro com o email */
+Contact* searchByEmail(CBook* book, Contact* toBeInserted) {
+    Contact* aux = book->head;    
+    boolean found = false;
+
+    while (!found && aux != NULL) {
+        if (strcmp(aux->email, toBeInserted->email) == 0) {
+            found = true;
+            break;
+        }
+
+        aux = aux->next;
+    }
+
+    if (found) {
+        return aux;
+    }
+
+    return NULL;
+}
+
+boolean emailAlreadyExist(CBook* book, Contact* newContact) {
+    if (searchByEmail(book, newContact) != NULL) {
+        printf("Email already exists! Returning to menu...\n");
+        free(newContact);
+        return true;
+    }
+
+    return false;
+}
+
+/* recebe o input do usuário */
 Contact* readContact() {
     Contact* newContact = malloc(sizeof(Contact));
     newContact->next = NULL;
@@ -111,6 +143,10 @@ void insContact(CBook* book) {
 
     Contact *newContact = readContact();
 
+    if (emailAlreadyExist(book, newContact)) {
+        return;
+    }
+
     if (book->tail == NULL) {
         book->head = newContact;
         book->tail = newContact;
@@ -119,8 +155,6 @@ void insContact(CBook* book) {
         book->tail = newContact;
         newContact->prev->next = newContact;
     }
-
-    return;
 }
 
 // Permite o cadastro de um contato
@@ -132,19 +166,14 @@ void insContactAfter(CBook* book) {
     scanf("%s%*[^\n]", email);
     getchar();
 
-    boolean found = false;
-
-    Contact* aux = book->head;
     Contact* newContact = readContact();
 
-    while (!found && aux != NULL) {
-        if (strcmp(aux->email, email) == 0) {
-            found = true;
-            break;
-        }
-
-        aux = aux->next;
+    if (emailAlreadyExist(book, newContact)) {
+        return;
     }
+
+    Contact* aux = searchByEmail(book, newContact);
+    boolean found = aux != NULL;
 
     if (found) {
         /* caso tenha encontrado registro para email inserido */
