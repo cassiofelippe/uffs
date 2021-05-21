@@ -223,8 +223,30 @@ void queryContact(CBook* book) {
 }
 
 // Permite a atualização dos dados de um contato da agenda
-void upContact() {
-    return;
+void upContact(CBook* book) {
+    Contact* aux = book->head;
+    char email[40];
+    
+    printf("Insert the email: ");
+    scanf("%s%*[^\n]", email);
+    getchar();
+
+    while (aux != NULL) {
+        if (strcmp(aux->email, email) == 0) {
+            // fgets(newContact->name, sizeof(newContact->name), stdin);
+            // newContact->name[strcspn(newContact->name, "\n")] = '\0';
+            scanf("%s", aux->name);
+
+            insDate(aux);
+
+            // fgets(newContact->phone, sizeof(newContact->phone), stdin);
+            // newContact->phone[strcspn(newContact->phone, "\n")] = '\0';
+            scanf("%s", aux->phone);
+            break;
+        }
+
+        aux = aux->next;
+    }
 }
 
 void freeMem() {
@@ -269,7 +291,7 @@ int menu(CBook* book) {
                 break;
             }
             case 4: {
-                upContact();
+                upContact(book);
                 break;
             }
             case 5: {
