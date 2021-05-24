@@ -202,6 +202,15 @@ void insContactAfter(CBook* book) {
     }
 }
 
+void printContact(Contact* contact) {
+    printf("%s, %s, %s, %s\n",
+        contact->name,
+        formatDate(contact->birth),
+        contact->email,
+        contact->phone
+    );
+}
+
 // Permite excluir um contato da agenda baseado no email
 void delContact(CBook* book) {
     char email[40];
@@ -244,15 +253,6 @@ void delContact(CBook* book) {
     printf("Contact deleted successfully!\n");
 }
 
-void printContact(Contact* contact) {
-    printf("%s, %s, %s, %s\n",
-        contact->name,
-        formatDate(contact->birth),
-        contact->email,
-        contact->phone
-    );
-}
-
 // Lista o conteúdo da agenda (todos os campos)
 void listContacts(CBook* book) {
     // printf("DEBUG >> listContacts\n");
@@ -276,7 +276,7 @@ void queryContact(CBook* book) {
     char name[30];
     
     printf("Insert the name: ");
-    scanf("%s%*[^\n]", name);
+    scanf("%s%*[^\n]", name); // TODO fgets
     getchar();
 
     while (aux != NULL) {
@@ -337,7 +337,7 @@ void freeMem() {
 
 // Apresenta o menu da aplicação e retorna a opção selecionada
 int menu(CBook* book) {
-    int op;
+    int op = -1;
 
     while (op != EXIT) {
         printf("\
