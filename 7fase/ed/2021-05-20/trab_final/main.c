@@ -126,12 +126,12 @@ Contact* readContact() {
 
     insDate(newContact);
 
-    // fgets(newContact->email, sizeof(newContact->email), stdin);
-    // newContact->email[strcspn(newContact->email, "\n")] = '\0';
-    scanf("%s", newContact->email); // TODO o email inserido não pode existir na agenda
+    fgets(newContact->email, sizeof(newContact->email), stdin);
+    newContact->email[strcspn(newContact->email, "\n")] = '\0';
+    scanf("%s", newContact->email);
 
-    // fgets(newContact->phone, sizeof(newContact->phone), stdin);
-    // newContact->phone[strcspn(newContact->phone, "\n")] = '\0';
+    fgets(newContact->phone, sizeof(newContact->phone), stdin);
+    newContact->phone[strcspn(newContact->phone, "\n")] = '\0';
     scanf("%s", newContact->phone);
 
     return newContact;
