@@ -126,12 +126,12 @@ Contact* readContact() {
 
     insDate(newContact);
 
-    fgets(newContact->email, sizeof(newContact->email), stdin);
-    newContact->email[strcspn(newContact->email, "\n")] = '\0';
+    // fgets(newContact->email, sizeof(newContact->email), stdin);
+    // newContact->email[strcspn(newContact->email, "\n")] = '\0';
     scanf("%s", newContact->email);
 
-    fgets(newContact->phone, sizeof(newContact->phone), stdin);
-    newContact->phone[strcspn(newContact->phone, "\n")] = '\0';
+    // fgets(newContact->phone, sizeof(newContact->phone), stdin);
+    // newContact->phone[strcspn(newContact->phone, "\n")] = '\0';
     scanf("%s", newContact->phone);
 
     return newContact;
@@ -184,6 +184,8 @@ void insContactAfter(CBook* book) {
         /* caso o registro encontrado seja o último da lista */
         if (newContact->next != NULL) {
             newContact->next->prev = newContact;
+        } else {
+            book->tail = newContact;
         }
     } else {
         /* caso não tenha encontrado */
