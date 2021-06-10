@@ -1,0 +1,17 @@
+CASSIO LUIS ZAMIGNAN FORTE FELIPPE - 23 ANOS (1998)
+CHAPECÓ - SC
+
+TRABALHO: SICOOB MAXICRÉDITO - SETOR DE GESTÃO DE PROCESSOS
+- No setor atual continuo desempenhando a função de desenvolvimento de software, seja de aplicações web ou algoritmos para auxiliar em atividades específicas das áreas solicitantes;
+- A experiência de trabalhar nesta área é muito gratificante devido ao aprendizado adquirido constantemente, além de casar muito bem com o curso de CC;
+- Nas aplicações web programamos em:
+	-- Java (VRaptor, Spring) e Python para o backend;
+	-- JavaScript (EmberJS, VueJS) no frontend;
+	-- Python e uma ferramenta chamada UIPath para robotização/automatização de tarefas;
+	-- Bancos em SQL (Postgres, MySQL e MS SQLServer) e NoSQL (MongoDB);
+- Nos pontos positivos, além do aprendizado, a oportunidade de melhorar a interação com pessoas de áreas distintas e noção de negócio;
+- Como qualquer lugar, há problemas que tentamos resolver com o passar do tempo, como falha na comunicação, usuário solicitando funções/disponibilidades que acaba não usando e resultando em tempo "perdido";
+
+- Minha expectativa é aprender melhores formas de lidar com os problemas existentes e também de organizar os projetos de forma com que evitemos ter os mesmos impasses já vividos anteriormente;
+
+- Considero que meu período de quarentena tem pontos positivos e negativos. Os negativos se voltam ao lado pessoal, vivência com os conhecidos, que acabamos se privando bastante. Mas profissionalmente tive a oportunidade de trabalhar remotamente, o que pode se tornar algo permanente, e isso foi algo que considero bastante e que pode mudar a forma como encaro a rotina de trabalho.
