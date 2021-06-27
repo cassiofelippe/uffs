@@ -19,11 +19,6 @@ int insertion_sort_implementation(int *list) {
 
     for (j = 1; j < LIST_SIZE; j++) {
         for (i = max_sorted_index + 1; i > 0; i--) {
-            // if (i == 0) {
-            //      skips the following code 
-            //     continue;
-            // }
-
             if (list[i] < list[i - 1]) {
                 aux = list[i - 1];
                 list[i - 1] = list[i];
@@ -49,8 +44,12 @@ int insertion_sort_implementation(int *list) {
 
 
 int main() {
-    int list[LIST_SIZE] = { 5, 18, 3, 4, 9, 7, 12, 15 }, operations;
-    
+    int list[LIST_SIZE], operations, i;
+
+    for (i = 0; i < LIST_SIZE; i++) {
+        scanf("%d", &list[i]);
+    }
+
     print_list(list);
 
     operations = insertion_sort_implementation(list);

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #define LIST_SIZE 8
 
@@ -12,7 +13,6 @@ void print_list(int *list) {
 
     printf("\n");
 }
-
 
 int bubble_sort_implementation(int *list) {
     int i, j, aux, iterations = 0, operations = 0, comparations = 0, flag;
@@ -44,10 +44,13 @@ int bubble_sort_implementation(int *list) {
     return operations;
 }
 
-
 int main() {
-    int list[LIST_SIZE] = { 5, 18, 3, 4, 9, 7, 12, 15 }, operations;
-    
+    int list[LIST_SIZE], operations, i;
+
+    for (i = 0; i < LIST_SIZE; i++) {
+        scanf("%d", &list[i]);
+    }
+
     print_list(list);
 
     operations = bubble_sort_implementation(list);
