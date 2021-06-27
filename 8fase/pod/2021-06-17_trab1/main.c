@@ -19,36 +19,6 @@ void print_list(int *list, int length) {
     printf("\n");
 }
 
-int bubble_sort_implementation(int *list, int length) {
-    int i, j, aux, iterations = 0, operations = 0, comparations = 0, flag;
-
-    for (j = 0; j < length; j++) {
-        flag = 0;
-        for (i = 0; i < length; i++) {
-            if (list[i] > list[i + 1] && i < (length - 1)) {
-                aux = list[i + 1];
-                list[i + 1] = list[i];
-                list[i] = aux;
-                flag = 1;
-                operations++;
-                
-                // printf("[%d|%d] => ", j, i);
-                // print_list(list);
-            }
-
-            comparations++;
-        }
-
-        iterations++;
-        
-        if (flag == 0) {
-            break;
-        }
-    }
-
-    return operations;
-}
-
 void populate_lists(
     int *list10asc, int *list10desc, int *list10rdm,
     int *list50asc, int *list50desc, int *list50rdm,
@@ -97,17 +67,54 @@ void populate_lists(
 }
 
 void print_info(char *alg_type, int size, char *order, clock_t start, clock_t end) {
-    double spent_time = ((double) end - start) / CLOCKS_PER_SEC;
+    double spent_time = ((double) end - start) / CLOCKS_PER_SEC / 1000;
 
     printf("[%s] size: %dk, order: %s, start: %ld, end: %ld\n", alg_type, size, order, start, end);
     printf("[%s] it took %lf seconds to sort\n\n", alg_type, spent_time);
+}
+
+long bubble_sort_implementation(int *list, int length) {
+    int i, j, aux, iterations = 0, operations = 0, comparations = 0, flag;
+    unsigned long start, end;
+
+    start = clock();
+    printf("start %ld\n", start);
+
+    for (j = 0; j < length; j++) {
+        flag = 0;
+        for (i = 0; i < length; i++) {
+            if (list[i] > list[i + 1] && i < (length - 1)) {
+                aux = list[i + 1];
+                list[i + 1] = list[i];
+                list[i] = aux;
+                flag = 1;
+                operations++;
+                
+                // printf("[%d|%d] => ", j, i);
+                // print_list(list);
+            }
+
+            comparations++;
+        }
+
+        iterations++;
+
+        if (flag == 0) {
+            break;
+        }
+    }
+
+    end = clock();
+    printf("end %ld\n", end);
+
+    return (end - start) / (CLOCKS_PER_SEC / 1000);
 }
 
 int main() {
     int list10asc[LIMIT_10000], list10desc[LIMIT_10000], list10rdm[LIMIT_10000];
     int list50asc[LIMIT_50000], list50desc[LIMIT_50000], list50rdm[LIMIT_50000];
     int list100asc[LIMIT_100000], list100desc[LIMIT_100000], list100rdm[LIMIT_100000];
-    clock_t start, end;
+    long spent_time;
 
     populate_lists(
         list10asc, list10desc, list10rdm,
@@ -115,20 +122,17 @@ int main() {
         list100asc, list100desc, list100rdm
     );
 
-    start = clock();
-    bubble_sort_implementation(list10asc, LIMIT_10000);
-    end = clock();
-    print_info("BUBBLE_SORT", 10, "asc", start, end);
+    spent_time = bubble_sort_implementation(list10asc, LIMIT_10000);
+    printf("spent time %ld\n", spent_time);
+    // print_info("BUBBLE_SORT", 10, "asc", *start, *end);
 
-    start = clock();
-    bubble_sort_implementation(list10desc, LIMIT_10000);
-    end = clock();
-    print_info("BUBBLE_SORT", 10, "desc", start, end);
+    spent_time = bubble_sort_implementation(list10desc, LIMIT_10000);
+    printf("spent time %ld\n", spent_time);
+    // print_info("BUBBLE_SORT", 10, "desc", *start, *end);
 
-    start = clock();
-    bubble_sort_implementation(list10rdm, LIMIT_10000);
-    end = clock();
-    print_info("BUBBLE_SORT", 10, "random", start, end);
+    spent_time = bubble_sort_implementation(list10rdm, LIMIT_10000);
+    printf("spent time %ld\n", spent_time);
+    // print_info("BUBBLE_SORT", 10, "random", *start, *end);
 
     return 0;
 }
