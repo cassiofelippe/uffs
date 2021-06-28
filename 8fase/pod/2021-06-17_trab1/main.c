@@ -3,66 +3,32 @@
 #include <time.h>
 #include <string.h>
 
-
-#define LIMIT_10000 10000
-#define LIMIT_50000 50000
-#define LIMIT_100000 100000
-
-
-void print_list(int *list, int length) {
-    int i;
-
-    for (i = 0; i < length; i++) {
-        printf("%d ", list[i]);
-    }
-
-    printf("\n");
-}
-
-void populate_lists(
-    int *list10asc, int *list10desc, int *list10rdm,
-    int *list50asc, int *list50desc, int *list50rdm,
-    int *list100asc, int *list100desc, int *list100rdm
-) {
+void populate_list(int *list, int limit, int order) {
     int i;
     time_t random_gen;
     
     srand((unsigned) time(&random_gen));
 
-    for (i = 1; i <= LIMIT_100000; i++) {
-        if (i <= LIMIT_10000) {
-            list10asc[i] = i;
-        }
+    switch(order) {
+        case 0:
+            for (i = 1; i <= limit; i++) {
+                list[i] = i;
+            }
+            break;
 
-        if (i <= LIMIT_50000) {
-            list50asc[i] = i;
-        }
-        
-        list100asc[i] = i;
-    }
-    
-    for (i = LIMIT_100000; i > 0; i--) {
-        if (i <= LIMIT_10000) {
-            list10desc[i] = i;
-        }
+        case 1:
+            for (i = limit; i > 0; i--) {
+                list[i] = i;
+            }
+            break;
 
-        if (i <= LIMIT_50000) {
-            list50asc[i] = i;
-        }
-        
-        list100asc[i] = i;
-    }
-    
-    for (i = 1; i <= LIMIT_100000; i++) {
-        if (i <= LIMIT_10000) {
-            list10asc[i] = rand() % (LIMIT_10000);
-        }
-
-        if (i <= LIMIT_50000) {
-            list50asc[i] = rand() % (LIMIT_50000);
-        }
-        
-        list100asc[i] = rand() % (LIMIT_100000);
+        case 2:
+            for (i = 1; i <= limit; i++) {
+                list[i] = rand() % (limit);
+            }
+            break;
+        default:
+            printf("INVALID ENTRY FOR [ORDER]!\n");
     }
 }
 
@@ -89,16 +55,13 @@ long bubble_sort_implementation(int *list, int length) {
                 list[i] = aux;
                 flag = 1;
                 operations++;
-                
-                // printf("[%d|%d] => ", j, i);
-                // print_list(list);
             }
 
             comparations++;
         }
 
         iterations++;
-
+        
         if (flag == 0) {
             break;
         }
@@ -110,29 +73,137 @@ long bubble_sort_implementation(int *list, int length) {
     return (end - start) / (CLOCKS_PER_SEC / 1000);
 }
 
+long selection_sort_implementation(int *list, int length) {
+    int i, j, aux, operations = 0, min_value_index = 0, ordered_index = 0, must_switch = 0;
+    unsigned long start, end;
+
+    start = clock();
+    printf("start %ld\n", start);
+
+
+    for (j = 0; j < length; j++) {
+        // printf("min_value_index %d, ordered_index %d\n", min_value_index, ordered_index);
+
+        min_value_index = ordered_index;
+
+        for (i = ordered_index; i < length; i++) {
+            // printf("is %d < %d ? %d\n", list[i], list[min_value_index], list[i] < list[min_value_index]);
+            if (list[i] < list[min_value_index]) {
+                min_value_index = i;
+                must_switch = 1;
+            }
+        }
+
+        // printf("analysing %d and %d, must_switch? %d\n", list[min_value_index], list[ordered_index], must_switch);
+
+        if (min_value_index != ordered_index) {
+            if (must_switch) {
+                aux = list[ordered_index];
+                list[ordered_index] = list[min_value_index];
+                list[min_value_index] = aux;
+                operations++;
+
+                min_value_index--;
+            }
+        } else {
+            min_value_index++;
+        }
+
+        must_switch = 0;
+        ordered_index++;
+    }
+
+    end = clock();
+    printf("end %ld\n", end);
+
+    return (end - start) / (CLOCKS_PER_SEC / 1000);
+}
+
+long insertion_sort_implementation(int *list, int length) {
+    int i, j, aux, iterations = 0, operations = 0, comparations = 0, max_sorted_index = 0;
+    unsigned long start, end;
+
+    start = clock();
+    printf("start %ld\n", start);
+
+
+    for (j = 1; j < length; j++) {
+        for (i = max_sorted_index + 1; i > 0; i--) {
+            if (list[i] < list[i - 1]) {
+                aux = list[i - 1];
+                list[i - 1] = list[i];
+                list[i] = aux;
+                operations++;
+            }
+
+            if (i > max_sorted_index) {
+                max_sorted_index = i;
+            }
+
+            comparations++;
+        }
+
+        iterations++;
+    }
+
+    end = clock();
+    printf("end %ld\n", end);
+
+    return (end - start) / (CLOCKS_PER_SEC / 1000);
+}
+
 int main() {
-    int list10asc[LIMIT_10000], list10desc[LIMIT_10000], list10rdm[LIMIT_10000];
-    int list50asc[LIMIT_50000], list50desc[LIMIT_50000], list50rdm[LIMIT_50000];
-    int list100asc[LIMIT_100000], list100desc[LIMIT_100000], list100rdm[LIMIT_100000];
+    // const int limit;
+    int type, limit, order;
+    scanf("%d", &type); // 0: BUBBLE, 1: SELECTION, 2: INSERTION
+    scanf("%d", &limit); // 0: 10K, 1: 50K, 2: 100K
+    scanf("%d", &order); // 0: ASC, 1: DESC, 2: RANDOM
     long spent_time;
 
-    populate_lists(
-        list10asc, list10desc, list10rdm,
-        list50asc, list50desc, list50rdm,
-        list100asc, list100desc, list100rdm
-    );
+    switch(limit) {
+        case 0:
+            limit = 10000;
+            break;
+        case 1:
+            limit = 50000;
+            break;
+        case 2:
+            limit = 100000;
+            break;
+        default:
+            printf("INVALID ENTRY FOR [LIMIT]!\n");
+            return 1;
+    }
 
-    spent_time = bubble_sort_implementation(list10asc, LIMIT_10000);
-    printf("spent time %ld\n", spent_time);
-    // print_info("BUBBLE_SORT", 10, "asc", *start, *end);
+    int list[limit];
+    populate_list(list, limit, order);
+    
+    switch(type) {
+        case 0:
+            spent_time = bubble_sort_implementation(list, limit);
+            break;
+        case 1:
+            spent_time = selection_sort_implementation(list, limit);
+            break;
+        case 2:
+            spent_time = insertion_sort_implementation(list, limit);
+            break;
+        default:
+            printf("INVALID ENTRY FOR [TYPE]!\n");
+            return 1;
+    }
 
-    spent_time = bubble_sort_implementation(list10desc, LIMIT_10000);
-    printf("spent time %ld\n", spent_time);
-    // print_info("BUBBLE_SORT", 10, "desc", *start, *end);
+    printf("spent time %ld ms\n", spent_time);
 
-    spent_time = bubble_sort_implementation(list10rdm, LIMIT_10000);
-    printf("spent time %ld\n", spent_time);
-    // print_info("BUBBLE_SORT", 10, "random", *start, *end);
+    printf("first 10 elements: ");
+
+    int i;
+
+    for (i = 0; i < 10; i++) {
+        printf("%d, ", list[i]);
+    }
+
+    printf("\nin a total of %d elements\n", limit);
 
     return 0;
 }
