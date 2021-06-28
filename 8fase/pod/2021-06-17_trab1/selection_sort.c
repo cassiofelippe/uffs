@@ -18,19 +18,19 @@ int selection_sort_implementation(int *list) {
     int i, j, aux, operations = 0, min_value_index = 0, ordered_index = 0, must_switch = 0;
 
     for (j = 0; j < LIST_SIZE; j++) {
-        printf("min_value_index %d, ordered_index %d\n", min_value_index, ordered_index);
+        // printf("min_value_index %d, ordered_index %d\n", min_value_index, ordered_index);
 
         min_value_index = ordered_index;
 
         for (i = ordered_index; i < LIST_SIZE; i++) {
-            printf("is %d < %d ? %d\n", list[i], list[min_value_index], list[i] < list[min_value_index]);
+            // printf("is %d < %d ? %d\n", list[i], list[min_value_index], list[i] < list[min_value_index]);
             if (list[i] < list[min_value_index]) {
                 min_value_index = i;
                 must_switch = 1;
             }
         }
 
-        printf("analysing %d and %d, must_switch? %d\n", list[min_value_index], list[ordered_index], must_switch);
+        // printf("analysing %d and %d, must_switch? %d\n", list[min_value_index], list[ordered_index], must_switch);
 
         if (min_value_index != ordered_index) {
             if (must_switch) {
