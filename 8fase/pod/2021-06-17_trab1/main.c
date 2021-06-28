@@ -41,7 +41,7 @@ void print_info(char *alg_type, int size, char *order, clock_t start, clock_t en
 
 long bubble_sort_implementation(int *list, int length) {
     int i, j, aux, iterations = 0, operations = 0, comparations = 0, flag;
-    unsigned long start, end;
+    clock_t start, end;
 
     start = clock();
     printf("start %ld\n", start);
@@ -75,7 +75,7 @@ long bubble_sort_implementation(int *list, int length) {
 
 long selection_sort_implementation(int *list, int length) {
     int i, j, aux, operations = 0, min_value_index = 0, ordered_index = 0, must_switch = 0;
-    unsigned long start, end;
+    clock_t start, end;
 
     start = clock();
     printf("start %ld\n", start);
@@ -121,7 +121,7 @@ long selection_sort_implementation(int *list, int length) {
 
 long insertion_sort_implementation(int *list, int length) {
     int i, j, aux, iterations = 0, operations = 0, comparations = 0, max_sorted_index = 0;
-    unsigned long start, end;
+    clock_t start, end;
 
     start = clock();
     printf("start %ld\n", start);
@@ -180,12 +180,15 @@ int main() {
     
     switch(type) {
         case 0:
+            printf("BUBBLE SORT\n");
             spent_time = bubble_sort_implementation(list, limit);
             break;
         case 1:
+            printf("SELECTION SORT\n");
             spent_time = selection_sort_implementation(list, limit);
             break;
         case 2:
+            printf("INSERTION SORT\n");
             spent_time = insertion_sort_implementation(list, limit);
             break;
         default:
