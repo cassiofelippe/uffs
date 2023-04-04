@@ -1,3 +1,4 @@
+// TODO put this file in the correct folder (git repo)
 /**
  * @file sorting.c
  * @author Cassio_Luis_Zamignan_Forte_Felippe
@@ -28,11 +29,11 @@
  */
 #include <stdio.h>
 
+void printv(int *v, int size, char *sortType);
 void copia(int *A, int *v, int size);
 void bubbleSort(int *A, int size);
-void printv(int *v, int size);
-// void selectionSort(int *A, int size);
-// void insertionSort(int *A, int size);
+void selectionSort(int *A, int size);
+void insertionSort(int *A, int size);
 // void mergeSort(int *A, int size);
 // void quickSort(int *A, int size);
 // void heapSort(int *A, int size);
@@ -40,10 +41,11 @@ void printv(int *v, int size);
 // void radixSort(int *A, int size);
 
 
-int main(){
+int main() {
 
     int i;
-    int vetor[] = {1, 22, -10, 38, 5, 7};
+    // int vetor[] = {1, 22, -10, 38, 5, 7};
+    int vetor[] = { 7, 10, 5, 3, 8, 4, 2, 9, 6 };
     int tamanhoVetor = (int)sizeof(vetor)/sizeof(int);
 
     printf("\nVetor original: ");
@@ -56,14 +58,19 @@ int main(){
     int bubbleVec[tamanhoVetor];
     copia(vetor, bubbleVec, tamanhoVetor);
     bubbleSort(bubbleVec, tamanhoVetor);
-    printf("\nBubble sort: ");
-    for (i = 0 ; i < tamanhoVetor ; i++)
-        printf("%d ", bubbleVec[i]);
-    printf("\n");
+    printv(bubbleVec, tamanhoVetor, "bubble sorted");
 
     // selection sort
+    int selectionVec[tamanhoVetor];
+    copia(vetor, selectionVec, tamanhoVetor);
+    selectionSort(selectionVec, tamanhoVetor);
+    printv(selectionVec, tamanhoVetor, "selection sorted");
 
     // insertion sort
+    int insertionVec[tamanhoVetor];
+    copia(vetor, insertionVec, tamanhoVetor);
+    insertionSort(insertionVec, tamanhoVetor);
+    printv(insertionVec, tamanhoVetor, "insertion sorted");
 
     // merge sort
 
@@ -78,16 +85,21 @@ int main(){
     return 0;
 }
 
-void printv(int *v, int size) {
+void printv(int *v, int size, char *sortType) {
     int i;
 
-    printf("\n>> vetor: ");
+    printf("\n>> %s: ", sortType);
     for (i = 0; i < size; i++) {
-        printf("%d%s", v[i], i == (size - 1) ? ";" : ", ");
+        printf("%d%s", v[i], i == (size - 1) ? "" : " | ");
     }
+    printf("\n");
 }
 
 void copia(int *A, int *V, int size) {
+    printf("______________________");
+    printf("\n");
+    printv(A, size, "original");
+
     int i;
     for (i = 0 ; i < size ; i++)
         V[i] = A[i];
@@ -112,13 +124,56 @@ void bubbleSort(int *A, int size) {
                 changed = 1;
             }
             
-            printv(v, size);
+            // printv(v, size, "bubble");
         }
 
 
         /* verifica se finalizou a ordenação */
         if (changed == 0) {
             break;
+        }
+    }
+}
+
+void selectionSort(int *A, int size) {
+    int *v = A, i, tmp, first = 0, smaller, ismaller;
+
+    for (first = 0; first < size; first++) {
+        // printf("\nsmIndex[%d]: %d", first, v[first]);
+        smaller = v[first];
+
+        for (i = first; i < size; i++) {
+            if (v[i] < smaller) {
+                smaller = v[i];
+                ismaller = i;
+                // printf("\n>> smaller: %d", smaller);
+            }
+        }
+
+        if (smaller < v[first]) {
+            tmp = v[ismaller];
+            v[ismaller] = v[first];
+            v[first] = tmp;
+        }
+
+        // printv(v, size, "selection");
+    }
+}
+
+void insertionSort(int *A, int size) {
+    int *v = A, i, tmp, isorted = 1;
+
+    for (isorted = 1; isorted < size; isorted++) {
+
+        for (i = isorted; i > 0; i--) {
+            if (v[i] < v[i - 1]) {
+                tmp = v[i];
+                v[i] = v[i - 1];
+                v[i - 1] = tmp;
+            } else {
+                continue;
+            }
+            printv(v, size, "insertion");
         }
     }
 }
