@@ -34,7 +34,7 @@ void copia(int *A, int *v, int size);
 void bubbleSort(int *A, int size);
 void selectionSort(int *A, int size);
 void insertionSort(int *A, int size);
-// void mergeSort(int *A, int size);
+void mergeSort(int *A, int size);
 // void quickSort(int *A, int size);
 // void heapSort(int *A, int size);
 // void countingSort(int *A, int size);
@@ -45,7 +45,8 @@ int main() {
 
     int i;
     // int vetor[] = {1, 22, -10, 38, 5, 7};
-    int vetor[] = { 7, 10, 5, 3, 8, 4, 2, 9, 6 };
+    // int vetor[] = { 7, 10, 5, 3, 8, 4, 2, 9, 6 };
+    int vetor[] = { 23, 17, 8, 15, 9, 12, 19, 7 };
     int tamanhoVetor = (int)sizeof(vetor)/sizeof(int);
 
     printf("\nVetor original: ");
@@ -73,6 +74,10 @@ int main() {
     printv(insertionVec, tamanhoVetor, "insertion sorted");
 
     // merge sort
+    int mergeVec[tamanhoVetor];
+    copia(vetor, mergeVec, tamanhoVetor);
+    mergeSort(mergeVec, tamanhoVetor);
+    printv(mergeVec, tamanhoVetor, "merge sorted");
 
     // quick sort
 
@@ -81,6 +86,8 @@ int main() {
     // counting sort
 
     // radix sort
+
+    printf("\n");
 
     return 0;
 }
@@ -92,12 +99,10 @@ void printv(int *v, int size, char *sortType) {
     for (i = 0; i < size; i++) {
         printf("%d%s", v[i], i == (size - 1) ? "" : " | ");
     }
-    printf("\n");
 }
 
 void copia(int *A, int *V, int size) {
-    printf("______________________");
-    printf("\n");
+    printf("\n______________________\n");
     printv(A, size, "original");
 
     int i;
@@ -124,6 +129,7 @@ void bubbleSort(int *A, int size) {
                 changed = 1;
             }
             
+            /* descomentar a linha abaixo para visualizar o desenvolvimento */
             // printv(v, size, "bubble");
         }
 
@@ -156,6 +162,7 @@ void selectionSort(int *A, int size) {
             v[first] = tmp;
         }
 
+        /* descomentar a linha abaixo para visualizar o desenvolvimento */
         // printv(v, size, "selection");
     }
 }
@@ -171,9 +178,42 @@ void insertionSort(int *A, int size) {
                 v[i] = v[i - 1];
                 v[i - 1] = tmp;
             } else {
+                /* evita iterações desnecessárias */
                 continue;
             }
-            printv(v, size, "insertion");
+
+            /* descomentar a linha abaixo para visualizar o desenvolvimento */
+            // printv(v, size, "insertion");
         }
     }
+}
+
+void merge(int *v, int start, int end) {
+    int div = end, tmp;
+
+    /* pega o indice da metade se for par ou metade + 1 se for ímpar */
+    int idiv = div % 2 > 0 ? div / 2 + 1 : div / 2;
+    printf("\n>> div / 2: %d", idiv);
+    
+    if (idiv > 2) {
+        merge(v, start, idiv);
+    } else {
+        merge(v, idiv + 1, end);
+    }
+    
+
+    if (v[start] > v[end]) {
+        tmp = v[start];
+        v[start] = v[end];
+        v[end] = tmp;
+
+        /* descomentar a linha abaixo para visualizar o desenvolvimento */
+        printv(v, end, "merge");
+    }
+}
+
+void mergeSort(int *A, int size) {
+    int *v = A, i, tmp, div = size;
+
+    merge(v, 0, size);
 }
