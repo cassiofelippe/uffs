@@ -1,4 +1,3 @@
-// TODO put this file in the correct folder (git repo)
 /**
  * @file sorting.c
  * @author Cassio_Luis_Zamignan_Forte_Felippe
@@ -28,6 +27,7 @@
  *
  */
 #include <stdio.h>
+#include <stdlib.h>
 
 void printv(int *v, int size, char *sortType);
 void copia(int *A, int *v, int size);
@@ -40,13 +40,16 @@ void mergeSort(int *A, int size);
 // void countingSort(int *A, int size);
 // void radixSort(int *A, int size);
 
+void merge(int *v, int start, int end);
+void intercalate(int *v, int start, int half, int end);
 
 int main() {
 
     int i;
     // int vetor[] = {1, 22, -10, 38, 5, 7};
     // int vetor[] = { 7, 10, 5, 3, 8, 4, 2, 9, 6 };
-    int vetor[] = { 23, 17, 8, 15, 9, 12, 19, 7 };
+    // int vetor[] = { 23, 17, 8, 15, 9, 12, 19, 7 };
+    int vetor[] = { 23, 17, 15, 8, 9, 12, 19, 7 };
     int tamanhoVetor = (int)sizeof(vetor)/sizeof(int);
 
     printf("\nVetor original: ");
@@ -188,32 +191,71 @@ void insertionSort(int *A, int size) {
     }
 }
 
-void merge(int *v, int start, int end) {
-    int div = end, tmp;
-
-    /* pega o indice da metade se for par ou metade + 1 se for ímpar */
-    int idiv = div % 2 > 0 ? div / 2 + 1 : div / 2;
-    printf("\n>> div / 2: %d", idiv);
-    
-    if (idiv > 2) {
-        merge(v, start, idiv);
-    } else {
-        merge(v, idiv + 1, end);
-    }
-    
-
-    if (v[start] > v[end]) {
-        tmp = v[start];
-        v[start] = v[end];
-        v[end] = tmp;
-
-        /* descomentar a linha abaixo para visualizar o desenvolvimento */
-        printv(v, end, "merge");
-    }
-}
-
 void mergeSort(int *A, int size) {
-    int *v = A, i, tmp, div = size;
+    int *v = A;
 
-    merge(v, 0, size);
+    // int start = 0, end = size - 1, half = end % 2 == 0 ? (end / 2) - 1 : end / 2;
+
+    merge(v, 0, size - 1);
 }
+
+void merge(int *v, int start, int end) {
+    int half, total = start + end;
+
+    if (start < end) {
+        half = (start + end) / 2;
+        // half = end % 2 == 0 ? (end / 2) - 1 : end / 2;
+        // half = total % 2 == 0 ? (total / 2) - 1 : total / 2;
+        merge(v, start, half);
+        merge(v, half + 1, end);
+
+        printv(v, end + 1, "merged");
+
+        intercalate(v, start, half, end);
+    }
+}
+
+void intercalate(int *v, int start, int half, int end) {
+    printf("\n>> intercalating start: %d, half: %d, end: %d", start, half, end);
+    int size = sizeof(int) * (end - start + 1);
+    printf("\n%d", size);
+    int *x = malloc(32); // TODO this shit avoids an execution error in the malloc bellow
+
+    printf("\n");
+    int i, j, k = 0;
+    int *aux = malloc(size);
+
+    for (i = 0, j = half + 1; i <= half && j <= end; k++) {
+        printf("\n>> will either be i: %d or j: %d", v[i], v[j]);
+        if (v[i] <= v[j]) {
+            aux[k] = v[i];
+            i++;
+        } else {
+            aux[k] = v[j];
+            j++;
+        }
+        printv(aux, k + 1, "aux0");
+    }
+
+
+    /* when there are items remaining in the first half */
+    for (; i <= half; i++, k++) {
+        aux[k] = v[i];
+        printv(aux, k + 1, "aux1");
+    }
+    
+    /* when there are items remaining in the second half */
+    for (; j <= end; j++, k++) {
+        aux[k] = v[j];
+        printv(aux, k + 1, "aux2");
+    }
+
+    /* replace the original array with the order values */
+    for (k = 0; k <= end; k++) {
+        v[k] = aux[k];
+    }
+
+    free(aux);
+    printv(v, k, "intercalated");
+}
+
