@@ -3,3 +3,6 @@ node_modules
 *.~lock*
 *.db
 7fase/ia/buscaheuristica
+__pycache__
+
+!*/7fase/ia/buscaheuristica/BuscaLocalTemperaSimulada.py
