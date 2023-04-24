@@ -35,13 +35,15 @@ void bubbleSort(int *A, int size);
 void selectionSort(int *A, int size);
 void insertionSort(int *A, int size);
 void mergeSort(int *A, int size);
-// void quickSort(int *A, int size);
+void quickSort(int *A, int size);
 // void heapSort(int *A, int size);
 // void countingSort(int *A, int size);
 // void radixSort(int *A, int size);
 
 void merge(int *v, int start, int end);
 void intercalate(int *v, int start, int half, int end);
+void quick(int *v, int start, int end);
+int partition(int *v, int start, int end);
 
 int main() {
 
@@ -84,6 +86,10 @@ int main() {
     printv(mergeVec, tamanhoVetor, "merge sorted");
 
     // quick sort
+    int quickVec[tamanhoVetor];
+    copia(vetor, quickVec, tamanhoVetor);
+    quickSort(quickVec, tamanhoVetor);
+    printv(quickVec, tamanhoVetor, "quick sorted");
 
     // heap sort
 
@@ -246,4 +252,41 @@ void intercalate(int *v, int start, int half, int end) {
     }
 
     free(aux);
+}
+
+void quickSort(int *A, int size) {
+    quick(A, 0, size);
+}
+
+void quick(int *v, int start, int end) {
+    int pivot;
+
+    /* descomentar a linha abaixo para visualizar o desenvolvimento */
+    printv(v, end, "quick");
+
+    if (start < end) {
+        pivot = partition(v, start, end);
+        quick(v, start, pivot - 1);
+        quick(v, pivot + 1, end);
+    }
+}
+
+int partition(int *v, int start, int end) {
+    int pivot = end, k = start, i, tmp;
+
+    for (i = start; i < end; i++) {
+        if (v[i] <= v[pivot]) {
+            tmp = v[i];
+            v[i] = v[k];
+            v[k] = tmp;
+        }
+    }
+
+    if (v[k] > v[pivot]) {
+        tmp = v[k];
+        v[k] = v[pivot];
+        v[pivot] = tmp;
+    }
+
+    return pivot;
 }
