@@ -255,7 +255,7 @@ void intercalate(int *v, int start, int half, int end) {
 }
 
 void quickSort(int *A, int size) {
-    quick(A, 0, size);
+    quick(A, 0, size - 1);
 }
 
 void quick(int *v, int start, int end) {
@@ -279,6 +279,7 @@ int partition(int *v, int start, int end) {
             tmp = v[i];
             v[i] = v[k];
             v[k] = tmp;
+            k++;
         }
     }
 
