@@ -50,6 +50,7 @@ int main() {
     // int vetor[] = { 7, 10, 5, 3, 8, 4, 2, 9, 6 };
     // int vetor[] = { 23, 17, 8, 15, 9, 12, 19, 7 };
     int vetor[] = { 23, 17, 15, 8, 9, 12, 19, 7 };
+    // int vetor[] = { 3, 5, 8, 9, 10, 2, 4, 6, 7 };
     int tamanhoVetor = (int)sizeof(vetor)/sizeof(int);
 
     printf("\nVetor original: ");
@@ -192,41 +193,28 @@ void insertionSort(int *A, int size) {
 }
 
 void mergeSort(int *A, int size) {
-    int *v = A;
-
-    // int start = 0, end = size - 1, half = end % 2 == 0 ? (end / 2) - 1 : end / 2;
-
-    merge(v, 0, size - 1);
+    merge(A, 0, size - 1);
 }
 
 void merge(int *v, int start, int end) {
-    int half, total = start + end;
+    int half;
 
     if (start < end) {
         half = (start + end) / 2;
-        // half = end % 2 == 0 ? (end / 2) - 1 : end / 2;
-        // half = total % 2 == 0 ? (total / 2) - 1 : total / 2;
         merge(v, start, half);
         merge(v, half + 1, end);
-
-        printv(v, end + 1, "merged");
-
         intercalate(v, start, half, end);
     }
 }
 
 void intercalate(int *v, int start, int half, int end) {
-    printf("\n>> intercalating start: %d, half: %d, end: %d", start, half, end);
-    int size = sizeof(int) * (end - start + 1);
-    printf("\n%d", size);
-    int *x = malloc(32); // TODO this shit avoids an execution error in the malloc bellow
+    int *aux = malloc(sizeof(int) * (end - start + 1));
+    int i = start, j = half + 1, k = 0;
 
-    printf("\n");
-    int i, j, k = 0;
-    int *aux = malloc(size);
+    /* descomentar a linha abaixo para visualizar o desenvolvimento */
+    // printv(v, end, "merge");
 
-    for (i = 0, j = half + 1; i <= half && j <= end; k++) {
-        printf("\n>> will either be i: %d or j: %d", v[i], v[j]);
+    while (i <= half && j <= end) {
         if (v[i] <= v[j]) {
             aux[k] = v[i];
             i++;
@@ -234,28 +222,28 @@ void intercalate(int *v, int start, int half, int end) {
             aux[k] = v[j];
             j++;
         }
-        printv(aux, k + 1, "aux0");
+
+        k++;
     }
 
-
-    /* when there are items remaining in the first half */
-    for (; i <= half; i++, k++) {
+    /* when there are elements remaining in the first half */
+    while (i <= half) {
         aux[k] = v[i];
-        printv(aux, k + 1, "aux1");
-    }
-    
-    /* when there are items remaining in the second half */
-    for (; j <= end; j++, k++) {
-        aux[k] = v[j];
-        printv(aux, k + 1, "aux2");
+        k++;
+        i++;
     }
 
-    /* replace the original array with the order values */
-    for (k = 0; k <= end; k++) {
-        v[k] = aux[k];
+    /* when there are elements remaining in the second half */
+    while (j <= end) {
+        aux[k] = v[j];
+        k++;
+        j++;
+    }
+
+    /* transferring the elemnts back to the original array */
+    for (k = start; k <= end; k++) {
+        v[k] = aux[k - start];
     }
 
     free(aux);
-    printv(v, k, "intercalated");
 }
-
