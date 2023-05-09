@@ -147,3 +147,28 @@ e09 :: [Integer] -> [Integer] -> [Integer]
 -- e09 a b | null (tail a) = a
 e09 a b | null (tail a) = [head a * head b]
         | otherwise = [head a * head b] ++ e09 (tail a) (tail b)
+
+
+-- 10. Defina um novo tipo de dado chamado Produto, que permita armazenar informações sobre:
+--  a. Produto perecível: código, descrição, ano de validade e se é comestível ou não.
+--  b. Produto não perecível: código, descrição, fabricante, ano de fabricação.
+-- Faça testes com este novo tipo de dado.
+
+data Produto = Perecivel Integer String Integer Bool
+    | NaoPerecivel Integer String String Integer
+    deriving Show
+
+showProduto :: Produto -> String
+showProduto produto = case produto of
+    Perecivel cod des val com -> "Codigo: " ++ show cod
+                              ++ " | Descricao: " ++ des
+                              ++ " | Ano de Validade: " ++ show val
+                              ++ " | Comestivel: " ++ show com
+    NaoPerecivel cod des fab ano -> "Codigo: " ++ show cod
+                              ++ " | Descricao: " ++ des
+                              ++ " | Fabricante: " ++ fab
+                              ++ " | Ano de Fabricacao: " ++ show ano
+
+--  inputs
+-- let p1 = Perecivel 1001 "Cerveja Antartica" 2023 True
+-- let p2 = NaoPerecivel 1002 "Arroz Prato Fino" "Prato Fino LTDA." 2022
