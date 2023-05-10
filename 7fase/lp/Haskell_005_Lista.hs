@@ -154,21 +154,105 @@ e09 a b | null (tail a) = [head a * head b]
 --  b. Produto não perecível: código, descrição, fabricante, ano de fabricação.
 -- Faça testes com este novo tipo de dado.
 
-data Produto = Perecivel Integer String Integer Bool
-    | NaoPerecivel Integer String String Integer
+data Produto = Perecivel Integer String Integer Bool Unidade Peso
+    | NaoPerecivel Integer String String Integer Unidade Peso
     deriving Show
 
 showProduto :: Produto -> String
 showProduto produto = case produto of
-    Perecivel cod des val com -> "Codigo: " ++ show cod
+    Perecivel cod des val com uni pes -> "Codigo: " ++ show cod
                               ++ " | Descricao: " ++ des
                               ++ " | Ano de Validade: " ++ show val
                               ++ " | Comestivel: " ++ show com
-    NaoPerecivel cod des fab ano -> "Codigo: " ++ show cod
+                              ++ " | " ++ show uni
+                              ++ " | " ++ show pes ++ "kg"
+    NaoPerecivel cod des fab ano uni pes -> "Codigo: " ++ show cod
                               ++ " | Descricao: " ++ des
                               ++ " | Fabricante: " ++ fab
                               ++ " | Ano de Fabricacao: " ++ show ano
+                              ++ " | " ++ show uni
+                              ++ " | " ++ show pes ++ "kg"
+
+validadeProduto :: Produto -> Integer
+validadeProduto (Perecivel _ _ val _ _ _) = val
+validadeProduto (NaoPerecivel _ _ _ _ _ _) = 0
 
 --  inputs
 -- let p1 = Perecivel 1001 "Cerveja Antartica" 2023 True
--- let p2 = NaoPerecivel 1002 "Arroz Prato Fino" "Prato Fino LTDA." 2022
+-- let p2 = NaoPerecivel 1002 "Arroz Prato Fino" "Prato Fino LTDA."
+
+
+-- 11. Defina um novo tipo de dado para armazenar a forma de comercialização de um produto,
+-- com duas opções:
+--  a. Unidade
+--  b. Peso
+-- Adicione este novo tipo de dado às duas opções do produto e refaça os testes anteriores.
+
+data Unidade = Unidade Integer
+    deriving Show
+
+data Peso = Peso Double
+    deriving Show
+
+--  inputs
+-- let p1 = Perecivel 1001 "Cerveja Antartica" 2023 True (Unidade 12) (Peso 5.3)
+-- let p2 = NaoPerecivel 1002 "Arroz Prato Fino" "Prato Fino LTDA." 2022 (Unidade 50) (Peso 10.0)
+
+
+-- 12. Faça uma função que receba um produto e o ano atual e verifique se ele ainda está válido
+-- para uso, retornando um valor booleano. Considere que produtos não perecíveis sempre
+-- estão válidos.
+
+e12 = validoProduto
+
+validoProduto :: Produto -> Integer -> Bool
+validoProduto p anoAtual = case p of
+    Perecivel _ _ _ _ _ _ -> (validadeProduto p) >= anoAtual
+    NaoPerecivel _ _ _ _ _ _ -> True
+
+
+-- 13. Escreva as funções and e or usando casamento de padrões.
+
+and' :: Bool -> Bool -> Bool
+and' False _ = False
+and' _ False = False
+and' a b = True
+
+or' :: Bool -> Bool -> Bool
+or' True _ = True
+or' _ True = True
+or' a b = False
+
+
+-- 14. Usando casamento de padrão, defina uma função que, dada uma lista de números, retorna:
+--  a. a soma dos dois primeiros elementos, se a lista tiver pelo menos dois elementos;
+--  b. a cabeça da lista, se ela contiver apenas um elemento;
+--  c. zero, caso contrário.
+
+e14 :: [Integer] -> Integer
+e14 [a, b] = a + b
+e14 [a, b, _] = a + b
+e14 [a] = a
+e14 a = 0
+
+
+-- 15. Utilize uma função de alta ordem para realizar a contagem de elementos de uma lista.
+
+len :: [a] -> Integer
+len [] = 0
+len (x:xs) = (+1) (len xs)
+
+
+-- 16. Identifique qual é o resultado da compilação e avaliação das expressões a seguir, podendo
+-- ser um determinado valor ou lista de valores, erro de sintaxe ou erro de tipo.
+--     a. if 1 == 2 then "abc" else [’d’, ’e’, ’f’]
+--     b. let pot_dois x | x <= 0 = 1
+--                       | otherwise = 2 * pot_dois (x-1)
+--         in pot_dois 6
+--     c. case not (1 /= 2) of
+--             True -> 3
+--             False -> "fim”
+--     d. filter (not . even . (+3)) [5, 6, 7, 8, 9]
+--     e. sum (map (logBase 3) [9, 27, 81])
+    -- f. foldl (\x y -> x + y) 0 [10,20,30]
+
