@@ -108,17 +108,12 @@ e05 a b = a * (e05 a (b - 1))
 -- inicial do funcionário, o ano de contratação e o ano atual, e calcula e exibe o seu salário
 -- atual.
 
--- e06 :: Double -> Integer -> Integer -> Double
--- e06 salAtual anoContr anoAtual
---     | anoAtual - anoContr == 0 = salAtual
---     | anoAtual - anoContr == 1 = salAtual + salAtual * (0.015 :: Double)
---     | otherwise = e06_aux salAtual anoContr anoAtual (0.015 :: Double)
-
--- e06_aux :: Double -> Integer -> Integer -> Double -> Double
--- e06_aux salAtual anoContr anoAtual aumento
---     | anoAtual - anoContr == 0 = salAtual
---     | anoAtual - anoContr == 1 = salAtual + (salAtual * (aumento :: Double))
---     | otherwise = salAtual * (e06_aux salAtual anoContr (anoAtual - 1) (aumento * fromIntegral (anoAtual - anoContr)))
+e06 :: Double -> Integer -> Integer -> Double
+e06 salAtual anoContr anoAtual = let aumento = 0.015
+    in case () of
+          _ | anoAtual - anoContr == 0 -> salAtual
+            | anoAtual - anoContr == 1 -> salAtual + salAtual * aumento
+            | otherwise                -> (+salAtual) (e06 (salAtual + salAtual * (fromIntegral (anoAtual - anoContr) * aumento)) anoContr (anoAtual - 1))
 
 
 -- 7. Defina uma função chamada ultimo que seleciona o último elemento de uma lista não vazia
@@ -254,5 +249,11 @@ len (x:xs) = (+1) (len xs)
 --             False -> "fim”
 --     d. filter (not . even . (+3)) [5, 6, 7, 8, 9]
 --     e. sum (map (logBase 3) [9, 27, 81])
-    -- f. foldl (\x y -> x + y) 0 [10,20,30]
+--     f. foldl (\x y -> x + y) 0 [10,20,30]
 
+-- a: error: lexical error at character 'd'
+-- b: 64
+-- c: error: lexical error in string/character literal at end of input
+-- d: [6,8]
+-- e: 9.0
+-- f: 60
