@@ -51,8 +51,10 @@ int main() {
     // int vetor[] = {1, 22, -10, 38, 5, 7};
     // int vetor[] = { 7, 10, 5, 3, 8, 4, 2, 9, 6 };
     // int vetor[] = { 23, 17, 8, 15, 9, 12, 19, 7 };
-    int vetor[] = { 23, 17, 15, 8, 9, 12, 19, 7 };
+    // int vetor[] = { 23, 17, 15, 8, 9, 12, 19, 7 };
     // int vetor[] = { 3, 5, 8, 9, 10, 2, 4, 6, 7 };
+    // int vetor[] = { 5, 27, 0, 14, 12, 31 };
+    int vetor[] = { 23, 34, 0, 7, 51, 28, 14, 5, 1, 12, 30 };
     int tamanhoVetor = (int)sizeof(vetor)/sizeof(int);
 
     printf("\nVetor original: ");
@@ -140,7 +142,7 @@ void bubbleSort(int *A, int size) {
             }
             
             /* descomentar a linha abaixo para visualizar o desenvolvimento */
-            // printv(v, size, "bubble");
+            printv(v, size, "bubble");
         }
 
 
@@ -173,7 +175,7 @@ void selectionSort(int *A, int size) {
         }
 
         /* descomentar a linha abaixo para visualizar o desenvolvimento */
-        // printv(v, size, "selection");
+        printv(v, size, "selection");
     }
 }
 
